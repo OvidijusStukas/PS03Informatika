@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS User
 (
   UserId      INT           NOT NULL AUTO_INCREMENT,
   UserRoleId  INT           NOT NULL,
-  ShopId      INT           NOT NULL,
+  ShopId      INT           NULL,
   UserName    NVARCHAR(60)  NOT NULL,
   Password    VARCHAR(60)   NOT NULL,
   Email       VARCHAR(254)  NOT NULL,
