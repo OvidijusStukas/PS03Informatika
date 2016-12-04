@@ -34,6 +34,11 @@
         <input id="registration-password" class="form-control" th:field="*{password}" name="password" type="password" placeholder="Slaptažodis"/>
         <i class="glyphicon glyphicon-lock form-control-feedback"></i>
       </div>
+      <div class="form-group has-feedback has-feedback-left">
+        <select class="form-control" th:field="*{shopId}">
+          <option th:each="shop : ${shops}" th:value="${shop.shopId}" th:text="${T(java.lang.String).format('%s, %s %s-%s', shop.country, shop.city, shop.street, shop.streetNumber)}"></option>
+        </select>
+      </div>
       <hr/>
       <button id="signin-button" class="btn btn-lg btn-default btn-block" type="submit">Registruoti</button>
     </form>

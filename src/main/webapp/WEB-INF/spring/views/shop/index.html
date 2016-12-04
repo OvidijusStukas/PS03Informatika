@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments/header :: head">
+</head>
+<body>
+<th:block th:include="fragments/header :: top-menu"/>
+
+<a th:href="@{/shop/add}"><i class="glyphicon glyphicon-plus"></i> Sukurti naują parduotuvę</a>
+
+<table class="table">
+  <thead>
+  <tr>
+    <th>Šalis</th>
+    <th>Miestas</th>
+    <th>Gatvė</th>
+    <th>Gatvės numeris</th>
+    <th>Pašto kodas</th>
+    <th>Valiuta</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="shop : ${shops}">
+    <th th:text="${shop.country}"></th>
+    <th th:text="${shop.city}"></th>
+    <th th:text="${shop.street}"></th>
+    <th th:text="${shop.streetNumber}"></th>
+    <th th:text="${shop.zipCode}"></th>
+    <th th:text="${shop.currency}"></th>
+  </tr>
+  </tbody>
+</table>
+
+<th:block th:include="fragments/header :: scripts"/>
+</body>
+</html>

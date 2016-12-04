@@ -21,6 +21,9 @@ public class UserEntity implements Serializable {
   @JoinColumn(name = "ShopId")
   private ShopEntity shopEntity;
 
+  @Transient
+  private int shopId;
+
   @Column(name = "UserName")
   private String userName;
 
@@ -41,6 +44,14 @@ public class UserEntity implements Serializable {
 
   @Column(name = "IsActive")
   private boolean isActive;
+
+  public int getShopId() {
+    return shopId;
+  }
+
+  public void setShopId(int shopId) {
+    this.shopId = shopId;
+  }
 
   public int getUserId() {
     return userId;

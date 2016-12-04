@@ -1,5 +1,6 @@
 package edu.informatika.semestrinis.controller;
 
+import edu.informatika.semestrinis.entity.ShopEntity;
 import edu.informatika.semestrinis.entity.UserEntity;
 import edu.informatika.semestrinis.entity.UserRoleEntity;
 import edu.informatika.semestrinis.repository.BaseRepository;
@@ -21,12 +22,14 @@ import java.util.stream.Collectors;
 public class UserController {
 
   private final BCryptPasswordEncoder passwordEncoder;
+  private final BaseRepository<ShopEntity> shopRepository;
   private final BaseRepository<UserEntity> userRepository;
   private final BaseRepository<UserRoleEntity> roleRepository;
 
   @Autowired
-  public UserController(BCryptPasswordEncoder passwordEncoder, BaseRepository<UserEntity> userRepository, BaseRepository<UserRoleEntity> roleRepository) {
+  public UserController(BCryptPasswordEncoder passwordEncoder, BaseRepository<ShopEntity> shopRepository, BaseRepository<UserEntity> userRepository, BaseRepository<UserRoleEntity> roleRepository) {
     this.passwordEncoder = passwordEncoder;
+    this.shopRepository = shopRepository;
     this.userRepository = userRepository;
     this.roleRepository = roleRepository;
   }
@@ -52,7 +55,8 @@ public class UserController {
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @RequestMapping(value = {"employee/add"}, method = RequestMethod.GET)
   public ModelAndView addEmployee() {
-    ModelAndView modelAndView = new ModelAndView("user/employee");
+    ModelAndView modelAndView = new ModelAndView("user/add");
+    modelAndView.addObject("shops", shopRepository.getEntities(ShopEntity.class));
     modelAndView.addObject("model", new UserEntity());
     return modelAndView;
   }
@@ -65,6 +69,7 @@ public class UserController {
 
     UserRoleEntity role = roleRepository.getEntity(UserRoleEntity.class, 2);
     userEntity.setRole(role);
+    userEntity.setShopEntity(shopRepository.getEntity(ShopEntity.class, userEntity.getShopId()));
     userRepository.insertEntity(userEntity);
 
     return new ModelAndView("redirect:/user/management");
