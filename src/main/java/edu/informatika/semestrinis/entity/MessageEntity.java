@@ -3,15 +3,18 @@ package edu.informatika.semestrinis.entity;
 import javax.persistence.*;
 import java.util.Date;
 
+@Entity
 @Table(name = "Message")
 public class MessageEntity {
+  private static final long serialVersionUID = 1L;
 
   @Id
   @Column(name = "MessageId")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int messageId;
 
-  @OneToOne(fetch = FetchType.EAGER, mappedBy = "ParticipantId")
+  @OneToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "ParticipantId")
   private ParticipantEntity participant;
 
   @Column(name = "Text")

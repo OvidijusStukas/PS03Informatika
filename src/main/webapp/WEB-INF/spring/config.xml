@@ -71,7 +71,7 @@
   </tx:advice>
 
   <aop:config>
-    <aop:pointcut id="businessService" expression="execution(* com.cosisolutions.wms.website.repository.*Repository.*(..))"/>
+    <aop:pointcut id="businessService" expression="execution(* edu.informatika.semestrinis.repository.*Repository.*(..))"/>
     <aop:advisor advice-ref="transactionInterceptor" pointcut-ref="businessService"/>
   </aop:config>
   <!-- Database configuration END -->

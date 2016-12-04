@@ -1,18 +1,33 @@
 package edu.informatika.semestrinis.entity;
 
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
+@Entity
 @Table(name = "EmailMessage")
-public class EmailMessageEntity {
-  @OneToOne(fetch = FetchType.EAGER, mappedBy = "MessageId")
+public class EmailMessageEntity implements Serializable {
+  private static final long serialVersionUID = 1L;
+
+  @Id
+  @Column(name = "EmailMessageId")
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private int emailMessageId;
+
+  @OneToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "MessageId")
   private MessageEntity message;
 
   @Column(name = "SentDate")
   private Date sentDate;
+
+  public int getEmailMessageId() {
+    return emailMessageId;
+  }
+
+  public void setEmailMessageId(int emailMessageId) {
+    this.emailMessageId = emailMessageId;
+  }
 
   public MessageEntity getMessage() {
     return message;

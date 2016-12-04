@@ -1,9 +1,13 @@
 package edu.informatika.semestrinis.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
+@Entity
 @Table(name = "ServiceType")
-public class ServiceTypeEntity {
+public class ServiceTypeEntity implements Serializable {
+  private static final long serialVersionUID = 1L;
+
   @Id
   @Column(name = "ServiceTypeId")
   @GeneratedValue(strategy = GenerationType.IDENTITY)

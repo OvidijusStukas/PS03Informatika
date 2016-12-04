@@ -1,20 +1,25 @@
 package edu.informatika.semestrinis.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
+@Entity
 @Table(name = "Invoice")
-public class InvoiceEntity {
+public class InvoiceEntity implements Serializable {
+  private static final long serialVersionUID = 1L;
 
   @Id
   @Column(name = "InvoiceId")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int invoiceId;
 
-  @OneToOne(fetch = FetchType.EAGER, mappedBy = "InvoiceTypeId")
+  @OneToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "InvoiceTypeId")
   private InvoiceTypeEntity type;
 
-  @OneToOne(fetch = FetchType.EAGER, mappedBy = "CarId")
+  @OneToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "CarId")
   private CarEntity car;
 
   @Column(name = "Name")

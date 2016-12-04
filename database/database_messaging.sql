@@ -50,8 +50,10 @@ CREATE TABLE IF NOT EXISTS MessageItem
 
 CREATE TABLE IF NOT EXISTS EmailMessage
 (
+  EmailMessageId INT NOT NULL AUTO_INCREMENT,
   MessageId INT NOT NULL,
   SentDate DATETIME NOT NULL,
 
+  CONSTRAINT PK_EmailMessage__EmailMessageId PRIMARY KEY (EmailMessageId),
   CONSTRAINT FK_EmailMessage__MessageId FOREIGN KEY (MessageId) References Message(MessageId)
 ) CHARACTER SET UTF8 COLLATE UTF8_UNICODE_CI;

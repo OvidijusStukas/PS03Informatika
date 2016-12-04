@@ -1,19 +1,24 @@
 package edu.informatika.semestrinis.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
+@Entity
 @Table(name = "User")
-public class UserEntity {
+public class UserEntity implements Serializable {
+  private static final long serialVersionUID = 1L;
 
   @Id
   @Column(name = "UserId")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int userId;
 
-  @OneToOne(fetch = FetchType.EAGER, mappedBy = "UserRoleId")
+  @OneToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "UserRoleId")
   private UserRoleEntity role;
 
-  @OneToOne(fetch = FetchType.EAGER, mappedBy = "ShopId")
+  @OneToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "ShopId")
   private ShopEntity shopEntity;
 
   @Column(name = "UserName")

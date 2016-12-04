@@ -1,20 +1,25 @@
 package edu.informatika.semestrinis.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
+@Entity
 @Table(name = "Participant")
-public class ParticipantEntity {
+public class ParticipantEntity implements Serializable {
+  private static final long serialVersionUID = 1L;
 
   @Id
   @Column(name = "ParticipantId")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int participantId;
 
-  @OneToOne(fetch = FetchType.EAGER, mappedBy = "ChatGroupId")
+  @OneToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "ChatGroupId")
   private ChatGroupEntity chatGroup;
 
-  @OneToOne(fetch = FetchType.EAGER, mappedBy = "UserId")
+  @OneToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "UserId")
   private UserEntity user;
 
   @Column(name = "IpAddress")

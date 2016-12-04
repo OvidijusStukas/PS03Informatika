@@ -1,16 +1,20 @@
 package edu.informatika.semestrinis.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
+@Entity
 @Table(name = "MessageItem")
-public class MessageItemEntity {
+public class MessageItemEntity implements Serializable {
+  private static final long serialVersionUID = 1L;
 
   @Id
   @Column(name = "MessageItemId")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int messageItemId;
 
-  @OneToOne(fetch = FetchType.EAGER, mappedBy = "MessageId")
+  @OneToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "MessageId")
   private MessageEntity message;
 
   @Column(name = "MimeType")

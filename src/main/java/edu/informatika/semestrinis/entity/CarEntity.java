@@ -1,24 +1,29 @@
 package edu.informatika.semestrinis.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name = "Car")
-public class CarEntity {
+public class CarEntity implements Serializable {
+  private static final long serialVersionUID = 1L;
 
   @Id
   @Column(name = "CarId")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int carId;
 
-  @OneToOne(fetch = FetchType.EAGER, mappedBy = "ShopId")
+  @OneToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "ShopId")
   private ShopEntity shop;
 
-  @OneToOne(fetch = FetchType.EAGER, mappedBy = "BrandId")
+  @OneToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "BrandId")
   private CarConfigurationPositionEntity brand;
 
-  @OneToOne(fetch = FetchType.EAGER, mappedBy = "ModelId")
+  @OneToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "ModelId")
   private CarConfigurationPositionEntity model;
 
   @Column(name = "Year")
@@ -30,22 +35,26 @@ public class CarEntity {
   @Column(name = "DistanceTraveled")
   private long distanceTraveled;
 
-  @OneToOne(fetch = FetchType.EAGER, mappedBy = "FuelTypeId")
+  @OneToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "FuelTypeId")
   private CarConfigurationPositionEntity fuel;
 
-  @OneToOne(fetch = FetchType.EAGER, mappedBy = "ChassisTypeId")
+  @OneToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "ChassisTypeId")
   private CarConfigurationPositionEntity chassis;
 
   @Column(name = "WorkingCapacity")
   private double workingCapacity;
 
-  @OneToOne(fetch = FetchType.EAGER, mappedBy = "TransmissionTypeId")
+  @OneToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "TransmissionTypeId")
   private CarConfigurationPositionEntity transmission;
 
   @Column(name = "Power")
   private int power;
 
-  @OneToOne(fetch = FetchType.EAGER, mappedBy = "WheelPositionId")
+  @OneToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "WheelPositionId")
   private CarConfigurationPositionEntity wheelPosition;
 
   @Column(name = "SeatNumber")
@@ -57,7 +66,8 @@ public class CarEntity {
   @Column(name = "Color")
   private String color;
 
-  @OneToOne(fetch = FetchType.EAGER, mappedBy = "DriveTypeId")
+  @OneToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "DriveTypeId")
   private CarConfigurationPositionEntity drive;
 
   @Column(name = "WithDefects")

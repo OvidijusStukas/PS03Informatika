@@ -1,9 +1,12 @@
 package edu.informatika.semestrinis.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
+@Entity
 @Table(name = "UserRole")
-public class UserRoleEntity {
+public class UserRoleEntity implements Serializable {
+  private static final long serialVersionUID = 1L;
 
   @Id
   @Column(name = "UserRoleId")

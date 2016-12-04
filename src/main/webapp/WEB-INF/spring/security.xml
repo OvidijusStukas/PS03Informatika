@@ -11,10 +11,10 @@
   <sec:http auto-config="true" use-expressions="true">
     <sec:access-denied-handler error-page="/errors/403"/>
 
-    <sec:form-login login-page="/accounts/login"
+    <sec:form-login login-page="/user/login"
                     default-target-url="/"
-                    authentication-failure-url="/accounts?loginError=true"
-                    username-parameter="signin-email"
+                    authentication-failure-url="/user?loginError=true"
+                    username-parameter="signin-username"
                     password-parameter="signin-password" />
 
     <sec:logout logout-url="/j_spring_security_logout" logout-success-url="/" delete-cookies="JSESSIONID"/>
@@ -30,8 +30,12 @@
       <sec:password-encoder ref="encoder" />
       <sec:jdbc-user-service
         data-source-ref="dataSource"
-        users-by-username-query="SELECT email, password, active FROM account WHERE email = ?"
-        authorities-by-username-query="SELECT email, role FROM account WHERE email = ?" />
+        users-by-username-query="SELECT `UserName`, `Password`, `IsActive` FROM `user` WHERE `UserName` = ?"
+        authorities-by-username-query="
+          SELECT U.`UserName`, UR.`UserRoleName`
+          FROM `user` U
+          JOIN `userrole` UR ON UR.UserRoleId = U.UserRoleId
+          WHERE U.`UserName` = ?" />
     </sec:authentication-provider>
   </sec:authentication-manager>
 

@@ -1,0 +1,351 @@
+body {
+  margin-top: 50px;
+}
+
+@font-face {
+  font-family: 'robotoregular';
+  src: url('/fonts/Roboto-Regular-webfont.eot');
+  src: url('/fonts/Roboto-Regular-webfont.eot?#iefix') format('embedded-opentype'),
+  url('/fonts/Roboto-Regular-webfont.woff') format('woff'),
+  url('/fonts/Roboto-Regular-webfont.ttf') format('truetype'),
+  url('/fonts/Roboto-Regular-webfont.svg#robotoregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Main web configs*/
+html {
+  position: relative;
+  min-height: 100%;
+  height: 100%;
+}
+
+body {
+  font-family: robotoregular, "Helvetica Neue", sans-serif !important;
+  margin-top: 50px;
+  height: 100%;
+}
+
+/* Header configs */
+.header {
+  background-color: rgb(8, 8, 8);
+}
+
+/* Main web content configs */
+
+/* Decor elements */
+@media (min-width: 992px) {
+  .vertical-line {
+    height: 22px;
+    width: 1px;
+    border-left: 1px solid #eee;
+  }
+}
+
+@media (max-width: 991px) {
+  .vertical-line {
+    display: none;
+  }
+}
+
+#main-signin-container {
+  min-height: 100%;
+  background-size: cover;
+  background: url('/images/accounts-bg.jpg') no-repeat;
+}
+
+#register-form {
+  margin-bottom: 10px;
+}
+
+.input-element {
+  margin-top: 5px;
+}
+
+.input-lg ~ .fa.form-control-feedback {
+  line-height: 46px;
+}
+.has-feedback-left input.form-control {
+  padding-left: 34px;
+  padding-right: 12px;
+}
+.has-feedback-left .form-control-feedback {
+  left: 0;
+}
+
+#signin-container {
+  position: relative;
+  top: 50%;
+  transform: translateY(50%);
+  border-radius: 10px;
+  min-height: 300px;
+  max-width: 400px;
+  border: solid rgba(8, 8, 8, 0.3);
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+#signin-form {
+  margin: 10px;
+}
+
+#signin-option-container {
+  margin-top: -10px;
+  margin-bottom: 5px;
+}
+
+#signin-button {
+  color: rgb(230, 230, 230);
+  background-color: rgba(8, 8, 8, 0.7);
+}
+
+#signin-register-link-container {
+  margin: 5px;
+}
+
+.login-error {
+  color: red;
+}
+
+.validation-error {
+  color: red;
+  font-weight: bold;
+}
+
+.validation-valid {
+  border-color: green;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+}
+
+#content-wrapper {
+  height:100%;
+  background-size: cover;
+  background: url('/images/index-bg.jpg') no-repeat;
+}
+
+#index-text-container {
+  position: relative;
+  top: 35%;
+  vertical-align: middle;
+  border: solid rgba(8, 8, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+#index-text-container h3 {
+  color: white;
+  text-align: center;
+  font-style: italic;
+}
+
+#index-text-container h5 {
+  color: white;
+  text-align: center;
+  font-style: italic;
+}
+
+#index-text-container p {
+  color: white;
+  text-align: center;
+}
+
+#index-text-wrapper {
+  height: inherit;
+  width: inherit;
+  font-family: Florence;
+  font-style: italic;
+}
+
+#management-container {
+  margin-top: 50px;
+}
+
+#add-asset-container {
+  background-color: rgba(34,34,34,0.5);
+  height: 100%;
+}
+
+#asset-add-container {
+  position: relative;
+  transform: translateY(50%);
+  border-radius: 10px;
+  min-height: 300px;
+  max-width: 400px;
+  border: solid rgba(8, 8, 8, 0.3);
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+#asset-form {
+  margin-bottom: 10px;
+}
+
+#item-container {
+  height: 100%;
+}
+
+.white-text {
+  color: #fff;
+}
+
+#left-sidebar {
+  position: absolute;
+  left: 0;
+  top: 51px;
+  height: 100%;
+  background-color: rgba(34,34,34,0.85);
+  width: 20%;
+  border-right: solid rgba(255, 255, 255,0.7);
+}
+
+#left-sidebar-control {
+  z-index: 1;
+  position: absolute;
+  left: 100%;
+  height: 30px;
+  width: 30px;
+  color: #fff;
+  background-color: rgba(34,34,34,1);
+  border-right: solid rgba(255, 255, 255,0.7);
+  border-bottom: solid rgba(255, 255, 255,0.7);
+  border-left: solid rgba(255, 255, 255,0.7);
+  border-radius: 0px 0px 10px 0px;
+}
+
+#group-list {
+  margin-right: 40px;
+  list-style-type: none;
+}
+
+#right-sidebar {
+  position: absolute;
+  top: 51px;
+  right: 0px;
+  height: 100%;
+  background-color: rgba(34,34,34,0.85);
+  width: 20%;
+  border-left: solid rgba(255, 255, 255,0.7);
+}
+
+#item-gallery {
+  position: absolute;
+  width: 60%;
+  height: 100%;
+  left: 20%;
+  background-color: rgba(34, 34, 34, 0.7);
+}
+
+#right-sidebar-control {
+  position: absolute;
+  right: 100%;
+  height: 30px;
+  width: 30px;
+  color: #fff;
+  background-color: rgba(34,34,34,1);
+  border-left: solid rgba(255, 255, 255,0.7);
+  border-bottom: solid rgba(255, 255, 255,0.7);
+  border-right: solid rgba(255, 255, 255,0.7);
+  border-radius: 0px 0px 0px 10px;
+}
+
+/* Footer configs */
+#footer-content {
+  margin-top: 20px;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 60px;
+  color: #9d9d9d;
+}
+
+.vertical-middle{
+  vertical-align: middle;
+}
+
+.white-links:hover {
+  color: #337ab7;
+  text-decoration: none;
+}
+
+.white-links{
+  color: #2C8FE4;
+  text-decoration: none;
+}
+
+.grey-text {
+  color: #878787;
+}
+
+.thumbnail-decor {
+  text-align: center;
+  color: #fff;
+  background-color: rgba(37,37,37,0.1);
+}
+
+#thumbnail-container{
+  margin: 30px;
+}
+
+#item-add-container {
+  position: relative;
+  top: 2%;
+  border-radius: 10px;
+  min-height: 300px;
+  max-width: 400px;
+  border: solid rgba(8, 8, 8, 0.3);
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+.slite-left{
+  margin-left: 10px;
+}
+
+#dashboard-control {
+  width: 90%;
+  text-align: center;
+  margin-left: 5%;
+  margin-top: 30px;
+}
+
+#add-item-link {
+  margin-top: 0px;
+  color: rgba(87,87,87,0.7);
+  font-size: 17px;
+}
+
+#main-acc-edit-container {
+  min-height: 100%;
+  width: 100%;
+  background-size: cover;
+  background: url('/images/accounts-bg.jpg') no-repeat;
+}
+
+#edit-container {
+  position: relative;
+  top: 50%;
+  transform: translateY(50%);
+  border-radius: 10px;
+  min-height: 250px;
+  max-width: 400px;
+  border: solid rgba(8, 8, 8, 0.3);
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+.select-padding {
+  padding-left: 30px;
+}
+
+#add-item-button{
+  height: 35px;
+  margin-right: 30px;
+  margin-top: 0px;
+}
+
+#item-thumbnail {
+  min-height: 340px;
+}
+
+#item-image {
+  max-height: 170px;
+}

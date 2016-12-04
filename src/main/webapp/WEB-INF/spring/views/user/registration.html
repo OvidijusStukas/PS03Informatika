@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/header :: head">
+</head>
+<body>
+<th:block th:include="fragments/header :: top-menu"/>
+
+<div id="main-signin-container" class="container-flex">
+  <div id="signin-container" class="container text-center">
+    <h2>Registracija</h2>
+    <hr/>
+    <form id="register-form" class="form-signin" th:action="@{/user/registration}" th:object="${model}" method="POST">
+      <div class="form-group has-feedback has-feedback-left">
+        <input class="form-control" th:field="*{userName}" name="userName" type="text" placeholder="Prisijungimo vardas"/>
+        <i class="glyphicon glyphicon-user form-control-feedback"></i>
+      </div>
+      <div class="form-group has-feedback has-feedback-left">
+        <input class="form-control" th:field="*{email}" name="email" type="email" placeholder="El. paštas"/>
+        <i class="glyphicon glyphicon-envelope form-control-feedback"></i>
+      </div>
+      <div class="form-group has-feedback has-feedback-left">
+        <input class="form-control" th:field="*{name}" name="name" type="text" placeholder="Vardas"/>
+        <i class="glyphicon glyphicon-user form-control-feedback"></i>
+      </div>
+      <div class="form-group has-feedback has-feedback-left">
+        <input class="form-control" th:field="*{lastName}" name="lastName" type="text" placeholder="Pavardė"/>
+        <i class="glyphicon glyphicon-user form-control-feedback"></i>
+      </div>
+      <div class="form-group has-feedback has-feedback-left">
+        <input class="form-control" th:field="*{address}" name="address" type="text" placeholder="Adresas"/>
+        <i class="glyphicon glyphicon-map-marker form-control-feedback"></i>
+      </div>
+      <div class="form-group has-feedback has-feedback-left">
+        <input id="registration-password" class="form-control" th:field="*{password}" name="password" type="password" placeholder="Slaptažodis"/>
+        <i class="glyphicon glyphicon-lock form-control-feedback"></i>
+      </div>
+      <hr/>
+      <button id="signin-button" class="btn btn-lg btn-default btn-block" type="submit">Registruotis</button>
+    </form>
+  </div>
+</div>
+  <th:block th:include="fragments/header :: scripts"/>
+</body>
+</html>

@@ -1,10 +1,13 @@
 package edu.informatika.semestrinis.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
+@Entity
 @Table(name = "ChatGroup")
-public class ChatGroupEntity {
+public class ChatGroupEntity implements Serializable {
+  private static final long serialVersionUID = 1L;
 
   @Id
   @Column(name = "ChatGroupId")

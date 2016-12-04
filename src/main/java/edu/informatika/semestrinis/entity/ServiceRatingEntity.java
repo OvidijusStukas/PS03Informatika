@@ -1,17 +1,21 @@
 package edu.informatika.semestrinis.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
+@Entity
 @Table(name = "ServiceRating")
-public class ServiceRatingEntity {
+public class ServiceRatingEntity implements Serializable {
+  private static final long serialVersionUID = 1L;
 
   @Id
   @Column(name = "ServiceRatingId")
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int serviceRatingId;
 
-  @OneToOne(fetch = FetchType.EAGER, mappedBy = "ServiceId")
+  @OneToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "ServiceId")
   private ServiceEntity service;
 
   @Column(name = "Rating")
