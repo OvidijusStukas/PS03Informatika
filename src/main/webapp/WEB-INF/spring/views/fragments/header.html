@@ -26,8 +26,11 @@
         </div>
         <div class="collapse navbar-collapse" id="navbar-menu">
           <ul class="nav navbar-nav">
-            <li id="home-menu" class="active">
+            <li id="home-menu">
               <a th:href="@{/}"><span class="glyphicon glyphicon-home"></span> Pradžia</a>
+            </li>
+            <li sec:authorize="hasRole('ROLE_ADMIN')">
+              <a th:href="@{/user/management}"><span class="glyphicon glyphicon-user"></span> Darbuotojų valdymas</a>
             </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">

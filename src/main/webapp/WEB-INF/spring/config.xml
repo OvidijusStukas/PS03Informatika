@@ -76,7 +76,6 @@
   </aop:config>
   <!-- Database configuration END -->
 
-
   <!-- Thymeleaf configuration BEGIN -->
   <bean id="templateResolver" class="org.thymeleaf.spring4.templateresolver.SpringResourceTemplateResolver">
     <property name="prefix" value="/WEB-INF/spring/views/"/>

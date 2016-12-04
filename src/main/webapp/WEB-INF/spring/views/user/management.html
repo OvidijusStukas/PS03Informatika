@@ -6,7 +6,28 @@
 <body>
   <th:block th:include="fragments/header :: top-menu"/>
 
-  ABC
+  <a th:href="@{/user/employee/add}"><i class="glyphicon glyphicon-plus"></i> Sukurti naują darbuotoją</a>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Prisijungimo vardas</th>
+        <th>Vardas</th>
+        <th>Pavardė</th>
+        <th>El.paštas</th>
+        <th>Adresas</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="employee : ${employees}">
+        <th th:text="${employee.userName}"></th>
+        <th th:text="${employee.name}"></th>
+        <th th:text="${employee.lastName}"></th>
+        <th th:text="${employee.email}"></th>
+        <th th:text="${employee.address}"></th>
+      </tr>
+    </tbody>
+  </table>
 
   <th:block th:include="fragments/header :: scripts"/>
 </body>

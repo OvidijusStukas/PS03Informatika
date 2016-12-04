@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Controller
 @RequestMapping("user")
 public class UserController {
@@ -28,14 +32,42 @@ public class UserController {
   }
 
   @PreAuthorize("isAnonymous()")
-  @RequestMapping(value = {"", "/", "/login"})
+  @RequestMapping(value = {"", "/", "/login"}, method = RequestMethod.GET)
   public ModelAndView index() {
     return new ModelAndView("user/login");
   }
 
-  @RequestMapping("management")
+  @RequestMapping(value = "management", method = RequestMethod.GET)
   public ModelAndView management() {
-    return new ModelAndView("user/management");
+    List<UserEntity> users = userRepository.getEntities(UserEntity.class);
+    ModelAndView modelAndView = new ModelAndView("user/management");
+    modelAndView.addObject("employees",
+      users.stream()
+        .filter(userEntity -> userEntity.getRole().getName().equalsIgnoreCase("ROLE_EMPLOYEE"))
+        .collect(Collectors.toCollection(ArrayList::new)));
+
+    return modelAndView;
+  }
+
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @RequestMapping(value = {"employee/add"}, method = RequestMethod.GET)
+  public ModelAndView addEmployee() {
+    ModelAndView modelAndView = new ModelAndView("user/employee");
+    modelAndView.addObject("model", new UserEntity());
+    return modelAndView;
+  }
+
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @RequestMapping(value = {"employee/add"}, method = RequestMethod.POST)
+  public ModelAndView addEmployee(@ModelAttribute("model") UserEntity userEntity) {
+    userEntity.setActive(true);
+    userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
+
+    UserRoleEntity role = roleRepository.getEntity(UserRoleEntity.class, 2);
+    userEntity.setRole(role);
+    userRepository.insertEntity(userEntity);
+
+    return new ModelAndView("redirect:/user/management");
   }
 
   @PreAuthorize("isAnonymous()")
