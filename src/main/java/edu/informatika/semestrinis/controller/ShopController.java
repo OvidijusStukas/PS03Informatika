@@ -35,7 +35,7 @@ public class ShopController {
 
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @RequestMapping(value = "add", method = RequestMethod.GET)
-  public ModelAndView shop() {
+  public ModelAndView add() {
     ModelAndView modelAndView = new ModelAndView("shop/add");
     modelAndView.addObject("model", new ShopEntity());
 
@@ -44,9 +44,9 @@ public class ShopController {
 
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @RequestMapping(value = "add", method = RequestMethod.POST)
-  public ModelAndView shop(@ModelAttribute("model") ShopEntity shopEntity) {
+  public ModelAndView add(@ModelAttribute("model") ShopEntity shopEntity) {
     shopRepository.insertEntity(shopEntity);
 
-    return new ModelAndView("redirect:/shop");
+    return new ModelAndView("redirect:/add");
   }
 }

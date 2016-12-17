@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org/">
+<head th:replace="fragments/header :: head">
+</head>
+<body>
+<th:block th:include="fragments/header :: top-menu"/>
+
+<a th:href="@{/inventory/add}"><i class="glyphicon glyphicon-plus"></i> Sukurti naują automobilį</a>
+
+<table class="table">
+  <thead>
+  <tr>
+    <th>Markė</th>
+    <th>Modelis</th>
+    <th>Metai</th>
+    <th>Kaina</th>
+    <th>Nuvažiuotas atstumas</th>
+    <th>Degalų tipas</th>
+    <th>Kėbulo tipas</th>
+    <th>Litražas</th>
+    <th>Transmisija</th>
+    <th>Galia</th>
+    <th>Vairo pozicija</th>
+    <th>Sėdimų vietų kiekis</th>
+    <th>Durų skaičius</th>
+    <th>Spalva</th>
+    <th>Varantieji ratai</th>
+    <th>Turi defektų</th>
+    <th>Centrinis užraktas</th>
+    <th>Oro pagalvės</th>
+    <th>Parduota</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="car : ${cars}">
+    <th th:text="${car.getBrand().getName()}"></th>
+    <th th:text="${car.getModel().getName()}"></th>
+    <th th:text="${car.getYear()}"></th>
+    <th th:text="${car.getPrice()}"></th>
+    <th th:text="${car.getDistanceTraveled()}"></th>
+    <th th:text="${car.getFuel().getName()}"></th>
+    <th th:text="${car.getChassis().getName()}"></th>
+    <th th:text="${car.getWorkingCapacity()}"></th>
+    <th th:text="${car.getTransmission().getName()}"></th>
+    <th th:text="${car.getPower()}"></th>
+    <th th:text="${car.getWheelPosition().getName()}"></th>
+    <th th:text="${car.getSeatNumber()}"></th>
+    <th th:text="${car.getDoorNumber()}"></th>
+    <th th:text="${car.getColor()}"></th>
+    <th th:text="${car.getDrive().getName()}"></th>
+    <th th:text="${car.isWithDefects()}"></th>
+    <th th:text="${car.isCentralLock()}"></th>
+    <th th:text="${car.isAirBags()}"></th>
+    <th th:text="${car.isSold()}"></th>
+  </tr>
+  </tbody>
+</table>
+
+<th:block th:include="fragments/header :: scripts"/>
+</body>
+</html>

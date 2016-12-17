@@ -66,7 +66,6 @@ CREATE TABLE IF NOT EXISTS CarConfigurationPosition
   Value                      NVARCHAR(2000) NOT NULL,
 
   CONSTRAINT PK_CarConfigurationPosition__CarConfigurationPositionId   PRIMARY KEY (CarConfigurationPositionId),
-  CONSTRAINT UQ_CarConfigurationPosition__CarConfigurationIndexId_Name UNIQUE      (CarConfigurationIndexId, Name),
   CONSTRAINT FK_CarConfigurationPosition__CarConfigurationIndexId      FOREIGN KEY (CarConfigurationIndexId) REFERENCES CarConfigurationIndex(CarConfigurationIndexId)
 ) CHARACTER SET UTF8 COLLATE UTF8_UNICODE_CI;
 
