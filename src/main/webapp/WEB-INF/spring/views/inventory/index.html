@@ -58,7 +58,7 @@
   </tbody>
 </table>
 
-<div id="add-new-car" class="modal fade" tabindex="-1" role="dialog">
+<div sec:authorize="hasRole('ROLE_ADMIN')" id="add-new-car" class="modal fade" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -173,7 +173,7 @@
   </div>
 </div>
 
-<div id="edit-car" class="modal fade" tabindex="-1" role="dialog">
+<div sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')" id="edit-car" class="modal fade" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -289,7 +289,7 @@
   </div>
 </div>
 
-<div id="order-service" class="modal fade" tabindex="-1" role="dialog">
+<div sec:authorize="isAuthenticated()" id="order-service" class="modal fade" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">

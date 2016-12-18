@@ -1,14 +1,18 @@
 package edu.informatika.semestrinis.controller;
 
+import edu.informatika.semestrinis.entity.CarEntity;
 import edu.informatika.semestrinis.entity.ServiceEntity;
 import edu.informatika.semestrinis.entity.ServiceTypeEntity;
+import edu.informatika.semestrinis.model.ServiceModel;
 import edu.informatika.semestrinis.repository.BaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -19,10 +23,14 @@ import java.util.concurrent.ThreadLocalRandom;
 @RequestMapping(value = "service")
 public class ServiceController {
 
+  private final BaseRepository<CarEntity> carRepository;
+  private final BaseRepository<ServiceEntity> serviceRepository;
   private final BaseRepository<ServiceTypeEntity> serviceTypeRepository;
 
   @Autowired
-  public ServiceController(BaseRepository<ServiceTypeEntity> serviceTypeRepository) {
+  public ServiceController(BaseRepository<CarEntity> carRepository, BaseRepository<ServiceEntity> serviceRepository, BaseRepository<ServiceTypeEntity> serviceTypeRepository) {
+    this.carRepository = carRepository;
+    this.serviceRepository = serviceRepository;
     this.serviceTypeRepository = serviceTypeRepository;
   }
 
@@ -42,6 +50,19 @@ public class ServiceController {
     }
 
     return services;
+  }
+
+  @PreAuthorize("isAuthenticated()")
+  @RequestMapping(value = "order", method = RequestMethod.POST)
+  public ModelAndView order(@ModelAttribute ServiceModel serviceModel) {
+    serviceModel.getServices().stream().filter(ServiceEntity::isActive).forEach(service -> {
+      service.setType(serviceTypeRepository.getEntity(ServiceTypeEntity.class, service.getTypeId()));
+      service.setCar(carRepository.getEntity(CarEntity.class, service.getCarId()));
+
+      serviceRepository.insertEntity(service);
+    });
+
+    return new ModelAndView("redirect:/inventory");
   }
 
   private static double round(double unrounded, int roundingMode)
