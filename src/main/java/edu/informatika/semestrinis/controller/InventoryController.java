@@ -28,7 +28,7 @@ public class InventoryController {
     this.carConfigurationRepository = carConfigurationRepository;
   }
 
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')")
   @RequestMapping(value = {"", "/"}, method = RequestMethod.GET)
   public ModelAndView index() {
     List<CarEntity> cars = carRepository.getEntities(CarEntity.class);
@@ -67,7 +67,7 @@ public class InventoryController {
   public ModelAndView add(@ModelAttribute("model") CarEntity carEntity) {
     carRepository.insertEntity(carEntity);
 
-    return new ModelAndView("redirect:/add");
+    return new ModelAndView("redirect:/");
   }
 
   @ResponseBody
@@ -75,5 +75,23 @@ public class InventoryController {
   @RequestMapping(value = "getModels", method = RequestMethod.GET)
   public List<CarConfigurationPositionEntity> getModels(@RequestParam String brandValue) {
     return carConfigurationRepository.getPositions("model", brandValue);
+  }
+
+  @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')")
+  @RequestMapping(value = "edit", method = RequestMethod.GET)
+  public ModelAndView edit(@RequestParam int id) {
+    CarEntity car = carRepository.getEntity(CarEntity.class, id);
+    ModelAndView modelAndView = new ModelAndView("inventory/edit");
+    modelAndView.addObject("model", car);
+
+    return modelAndView;
+  }
+
+  @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')")
+  @RequestMapping(value = "edit", method = RequestMethod.POST)
+  public ModelAndView edit(@ModelAttribute("model") CarEntity car) {
+    carRepository.updateEntity(car);
+
+    return new ModelAndView("redirect:/");
   }
 }

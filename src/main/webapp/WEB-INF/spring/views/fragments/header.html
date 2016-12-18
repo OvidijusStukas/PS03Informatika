@@ -35,6 +35,9 @@
             <li sec:authorize="hasRole('ROLE_ADMIN')">
               <a th:href="@{/shop}"><span class="glyphicon glyphicon-shopping-cart"></span> Administravimas</a>
             </li>
+            <li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')">
+              <a th:href="@{/inventory}"><span class="glyphicon glyphicon-shopping-cart"></span> Asortimentas</a>
+            </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li sec:authorize="isAnonymous()">
