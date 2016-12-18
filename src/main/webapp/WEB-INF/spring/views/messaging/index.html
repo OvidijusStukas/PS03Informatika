@@ -6,12 +6,84 @@
 <body>
 <th:block th:include="fragments/header :: top-menu"/>
 
-<div class="container-flex">
+<a id="start-new-chat-group-btn" class="btn btn-primary" href="#"><i class="glyphicon glyphicon-plus"></i> Padėti naują pokalbį</a>
 
+<table id="chat-groups-table">
+    <thead>
+        <tr>
+            <td>Pavadinimas</td>
+            <td>Sukurimo data</td>
+            <td>paskutinės žinutės data</td>
+            <td>Aktyvus</td>
+        </tr>
+    </thead>
+    <tbody>
+    <tr data-id="1" class="group-chat">
+        <td>Test</td>
+        <td>2016-05-12</td>
+        <td>2016-12-19</td>
+        <td>true</td>
+    </tr>
+    <tr data-id="2" class="group-chat">
+        <td>Test2</td>
+        <td>2016-05-12</td>
+        <td>2016-12-19</td>
+        <td>true</td>
+    </tr>
+    </tbody>
+</table>
+
+<div id="group-chat" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Pokalbis: <span id="chat-name"></span></h4>
+            </div>
+            <div class="modal-body clearfix">
+                <div id="chat-container" class="col-xs-12 clearfix">
+                    <div class="message-for-me col-xs-12 pull-right clearfix">TEST</div>
+                    <div class="message-to-me pull-right clearfix">TEST2</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <textarea rows="4" cols="50" class="col-xs-12"></textarea>
+                <a id="chat-submit" class="btn btn-primary">Siūsti</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="create-chat-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Pokalbio sukūrimas</h4>
+            </div>
+            <div class="modal-body clearfix">
+                <form id="create-chat">
+                    <div class="form-group">
+                        <label for="name">Pokalbio pavadinimas</label>
+                        <input id="name" class="form-control" name="name" type="text" placeholder="Pokalbio pavadinimas"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="firstParticipant">Pasirinkite vartotoją</label>
+                        <select id="firstParticipant" class="form-control" name="firstParticipant">
+                            <option th:each="user : ${users}" th:value="${user.getUserId()}" th:text="${user.getName()}"></option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" id="create-chat-submit" class="btn btn-primary">Siūsti</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 <th:block th:include="fragments/header :: scripts"/>
-<script th:src="@{/js/app-inventory.js}" type="text/javascript"></script>
+<script th:src="@{/js/app-messaging.js}" type="text/javascript"></script>
 
 </body>
 </html>
