@@ -25,6 +25,7 @@ function setupModals(){
             setupEdit($(e.currentTarget));
             $("#edit-car").modal().addClass("md-show");
         }else{
+            setupServiceModal($(e.currentTarget));
             $("#order-service").modal().addClass("md-show");
         }
     })
@@ -193,4 +194,32 @@ function loadCarModel() {
       $("#edit-model").find('option[value=\"'+$(children[1]).data("model")+'\"]').prop('selected', true);
     });
   });
+}
+
+function setupServiceModal(model){
+
+    var fields = $(model.children());
+    $("#car-info").html(fields[0].innerHTML + " " + fields[1].innerHTML);
+    $("#serviceCarId").val(model.data("id"));
+
+    $.getJSON('/service/all', function(data) {
+
+        /*<div class="form-group">
+         <label for="edit-isSold">Parduota</label>
+         <input id="edit-isSold" name="isSold" type="checkbox"/>
+         </div>*/
+
+        $.each(data, function(index, val) {
+            var addText = "<div class='form-group'>" +
+                "<input type='checkbox' name='services["+index+"].active'>"+
+                "<label>"+val.description+" </label></br>"+
+                "<label> Kaina:</label>"+
+                "<input class='form-control' type='text' name='services["+index+"].price' value='"+val.price+"' disabled />"+
+                "<input type='hidden' name='services["+index+"].carId' value='"+model.data("id")+"'>" +
+                "<input type='hidden' name='services["+index+"].typeId' value='"+val.typeId+"'>"+
+                "</div></br>";
+            $("#insertTarget").append(addText);
+        });
+
+    });
 }

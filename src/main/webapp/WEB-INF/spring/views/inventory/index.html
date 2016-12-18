@@ -297,11 +297,15 @@
         <h4 class="modal-title">Užsisakyti paslaugą</h4>
       </div>
       <div class="modal-body">
-        <form></form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Atšaukti</button>
-        <button type="button" class="btn btn-primary">Užsisakyti</button>
+        <h4>Užsakomas automobilis: <span id="car-info"></span></h4>
+        <form th:action="@{/service/order}" method="POST">
+          <input id="serviceCarId" type="hidden" name="carId">
+          <span id="insertTarget"></span>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Atšaukti</button>
+            <button type="submit" class="btn btn-primary">Užsisakyti</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
