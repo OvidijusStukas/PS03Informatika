@@ -1,6 +1,7 @@
 $(document).ready(function(){
     setupModals();
     setupValidation();
+    setupDataTable();
 });
 
 function setupModals(){
@@ -24,42 +25,75 @@ function setupModals(){
 }
 
 function setupValidation(){
-    $("#add-new-car-form").validate(
-        $("#add-new-car-form").validate({
-            rules: {
-                brandId: "required",
-                modelId: "required",
-                year: "required",
-                price: "required",
-                distanceTraveled: "required",
-                fuelId: "required",
-                chassisId: "required",
-                workingCapacity: "required",
-                transmissionId: "required",
-                power: "required",
-                wheelPositionId: "required",
-                seatNumber: "required",
-                doorNumber: "required",
-                color: "required"
-            },
-            messages:{
-                brandId: "Laukas privalomas",
-                modelId: "Laukas privalomas",
-                year: "Laukas privalomas",
-                price: "Laukas privalomas",
-                distanceTraveled: "Laukas privalomas",
-                fuelId: "Laukas privalomas",
-                chassisId: "Laukas privalomas",
-                workingCapacity: "Laukas privalomas",
-                transmissionId: "Laukas privalomas",
-                power: "Laukas privalomas",
-                wheelPositionId: "Laukas privalomas",
-                seatNumber: "Laukas privalomas",
-                doorNumber: "Laukas privalomas",
-                color: "Laukas privalomas"
-            }
-        })
-    );
+    $("#add-new-car-form").validate({
+        rules: {
+            brandId: "required",
+            modelId: "required",
+            year: "required",
+            price: "required",
+            distanceTraveled: "required",
+            fuelId: "required",
+            chassisId: "required",
+            workingCapacity: "required",
+            transmissionId: "required",
+            power: "required",
+            wheelPositionId: "required",
+            seatNumber: "required",
+            doorNumber: "required",
+            color: "required"
+        },
+        messages: {
+            brandId: "Laukas privalomas",
+            modelId: "Laukas privalomas",
+            year: "Laukas privalomas",
+            price: "Laukas privalomas",
+            distanceTraveled: "Laukas privalomas",
+            fuelId: "Laukas privalomas",
+            chassisId: "Laukas privalomas",
+            workingCapacity: "Laukas privalomas",
+            transmissionId: "Laukas privalomas",
+            power: "Laukas privalomas",
+            wheelPositionId: "Laukas privalomas",
+            seatNumber: "Laukas privalomas",
+            doorNumber: "Laukas privalomas",
+            color: "Laukas privalomas"
+        }
+    });
+
+    $("#edit-car-form").validate({
+        rules: {
+            brandId: "required",
+            modelId: "required",
+            year: "required",
+            price: "required",
+            distanceTraveled: "required",
+            fuelId: "required",
+            chassisId: "required",
+            workingCapacity: "required",
+            transmissionId: "required",
+            power: "required",
+            wheelPositionId: "required",
+            seatNumber: "required",
+            doorNumber: "required",
+            color: "required"
+        },
+        messages:{
+            brandId: "Laukas privalomas",
+            modelId: "Laukas privalomas",
+            year: "Laukas privalomas",
+            price: "Laukas privalomas",
+            distanceTraveled: "Laukas privalomas",
+            fuelId: "Laukas privalomas",
+            chassisId: "Laukas privalomas",
+            workingCapacity: "Laukas privalomas",
+            transmissionId: "Laukas privalomas",
+            power: "Laukas privalomas",
+            wheelPositionId: "Laukas privalomas",
+            seatNumber: "Laukas privalomas",
+            doorNumber: "Laukas privalomas",
+            color: "Laukas privalomas"
+        }
+    });
 }
 
 function setupEdit(val){
@@ -98,5 +132,31 @@ function setupEdit(val){
 
     if($(children[18]).data("is-sold") === true)
         $("#edit-isSold").prop("checked",true);
+}
 
+function setupDataTable(){
+    $("#car-table").dataTable({
+        "language": {
+            "sEmptyTable":      "Lentelėje nėra duomenų",
+            "sInfo":            "Rodomi įrašai nuo _START_ iki _END_ iš _TOTAL_ įrašų",
+            "sInfoEmpty":       "Rodomi įrašai nuo 0 iki 0 iš 0",
+            "sInfoFiltered":    "(atrinkta iš _MAX_ įrašų)",
+            "sInfoPostFix":     "",
+            "sInfoThousands":   " ",
+            "sLengthMenu":      "Rodyti _MENU_ įrašus",
+            "sLoadingRecords":  "Įkeliama...",
+            "sProcessing":      "Apdorojama...",
+            "sSearch":          "Ieškoti:",
+            "sThousands":       " ",
+            "sUrl":             "",
+            "sZeroRecords":     "Įrašų nerasta",
+
+            "oPaginate": {
+                "sFirst": "Pirmas",
+                "sPrevious": "Ankstesnis",
+                "sNext": "Tolimesnis",
+                "sLast": "Paskutinis"
+            }
+        }
+    });
 }
