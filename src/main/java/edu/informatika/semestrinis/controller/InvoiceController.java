@@ -2,7 +2,7 @@ package edu.informatika.semestrinis.controller;
 
 import edu.informatika.semestrinis.entity.InvoiceEntity;
 import edu.informatika.semestrinis.helper.AuthenticationHelper;
-import edu.informatika.semestrinis.repository.BaseRepository;
+import edu.informatika.semestrinis.repository.InvoiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -17,10 +17,10 @@ import java.util.List;
 public class InvoiceController {
 
     private final AuthenticationHelper authenticationHelper;
-    private final BaseRepository<InvoiceEntity> invoiceRepository;
+    private final InvoiceRepository invoiceRepository;
 
     @Autowired
-    public InvoiceController(BaseRepository<InvoiceEntity> invoiceRepository, AuthenticationHelper authenticationHelper) {
+    public InvoiceController(InvoiceRepository invoiceRepository, AuthenticationHelper authenticationHelper) {
         this.invoiceRepository = invoiceRepository;
         this.authenticationHelper = authenticationHelper;
     }
@@ -42,6 +42,8 @@ public class InvoiceController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')")
     @RequestMapping(value = "generate", method = RequestMethod.GET)
     public ModelAndView generate() {
+        invoiceRepository.generateInvoices();
+
         return new ModelAndView("redirect:/invoices");
     }
 }
