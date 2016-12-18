@@ -29,14 +29,6 @@ public class ShopController {
     List<ShopEntity> shops = shopRepository.getEntities(ShopEntity.class);
     ModelAndView modelAndView = new ModelAndView("shop/index");
     modelAndView.addObject("shops", shops);
-
-    return modelAndView;
-  }
-
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
-  @RequestMapping(value = "add", method = RequestMethod.GET)
-  public ModelAndView add() {
-    ModelAndView modelAndView = new ModelAndView("shop/add");
     modelAndView.addObject("model", new ShopEntity());
 
     return modelAndView;
