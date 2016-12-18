@@ -6,7 +6,7 @@ INSERT INTO CarConfigurationIndex (Name)
 VALUES ('brand'), ('model'), ('fuelType'), ('chassisType'), ('transmissionType'), ('wheelPosition'), ('driveType');
 
 INSERT INTO ServiceType (ServiceName)
-VALUES ('papildomas padangų komplektas'), ('pilnas kūro bakas'), ('nuplautas automobilis'), ('garso aparatūra'), ('tepalų pakeitimas'), ('dirželių keitimas')
+VALUES ('papildomas padangų komplektas'), ('pilnas kūro bakas'), ('nuplautas automobilis'), ('garso aparatūra'), ('tepalų pakeitimas'), ('dirželių keitimas');
 
 INSERT INTO CarConfigurationPosition (CarConfigurationIndexId, Name, Value)
 VALUES

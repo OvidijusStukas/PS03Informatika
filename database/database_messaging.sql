@@ -9,10 +9,18 @@ CREATE TABLE IF NOT EXISTS ChatGroup
   CONSTRAINT PK_ChatGroup__ChatGroupId PRIMARY KEY (ChatGroupId)
 ) CHARACTER SET UTF8 COLLATE UTF8_UNICODE_CI;
 
+CREATE TABLE IF NOT EXISTS ChatGroupParticipants
+(
+  ChatGroupId     INT NOT NULL,
+  ParticipantId   INT NOT NULL,
+
+  CONSTRAINT FK_ChatGroupParticipants__ParticipantId FOREIGN KEY (ParticipantId) REFERENCES Participant(ParticipantId),
+  CONSTRAINT FK_ChatGroupParticipants__ChatGroupId FOREIGN KEY (ChatGroupId) REFERENCES ChatGroup(ChatGroupId)
+) CHARACTER SET UTF8 COLLATE UTF8_UNICODE_CI;
+
 CREATE TABLE IF NOT EXISTS Participant
 (
   ParticipantId   INT          NOT NULL AUTO_INCREMENT,
-  ChatGroupId     INT          NOT NULL,
   UserId          INT          NOT NULL,
   IpAddress       NVARCHAR(30) NOT NULL,
   LastMessageDate DATETIME     NULL,
@@ -20,8 +28,7 @@ CREATE TABLE IF NOT EXISTS Participant
   Email           VARCHAR(254) NOT NULL,
 
   CONSTRAINT PK_Participant__ParticipantId PRIMARY KEY (ParticipantId),
-  CONSTRAINT FK_Participant__UserId        FOREIGN KEY (UserId)      REFERENCES User(UserId),
-  CONSTRAINT FK_Participant__ChatGroupId   FOREIGN KEY (ChatGroupId) REFERENCES ChatGroup(ChatGroupId)
+  CONSTRAINT FK_Participant__UserId        FOREIGN KEY (UserId)      REFERENCES User(UserId)
 ) CHARACTER SET UTF8 COLLATE UTF8_UNICODE_CI;
 
 CREATE TABLE IF NOT EXISTS Message

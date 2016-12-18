@@ -96,7 +96,7 @@ public class InventoryController {
   }
 
   @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_USER')")
-  @RequestMapping(value = "edit", method = RequestMethod.GET)
+  @RequestMapping(value = "order", method = RequestMethod.GET)
   public ModelAndView order(@RequestParam int id) {
     CarEntity car = carRepository.getEntity(CarEntity.class, id);
     ModelAndView modelAndView = new ModelAndView("inventory/order");
