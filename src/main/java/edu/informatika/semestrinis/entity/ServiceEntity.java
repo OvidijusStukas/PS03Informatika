@@ -17,9 +17,15 @@ public class ServiceEntity implements Serializable {
   @JoinColumn(name = "ServiceTypeId")
   private ServiceTypeEntity type;
 
+  @Transient
+  private int typeId;
+
   @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "CarId")
   private CarEntity car;
+
+  @Transient
+  private int carId;
 
   @Column(name = "Price")
   private double price;
@@ -46,12 +52,28 @@ public class ServiceEntity implements Serializable {
     this.type = type;
   }
 
+  public int getTypeId() {
+    return typeId;
+  }
+
+  public void setTypeId(int typeId) {
+    this.typeId = typeId;
+  }
+
   public CarEntity getCar() {
     return car;
   }
 
   public void setCar(CarEntity car) {
     this.car = car;
+  }
+
+  public int getCarId() {
+    return carId;
+  }
+
+  public void setCarId(int carId) {
+    this.carId = carId;
   }
 
   public double getPrice() {
