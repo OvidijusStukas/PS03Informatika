@@ -34,10 +34,13 @@
               <a th:href="@{/user/management}"><span class="glyphicon glyphicon-user"></span> Darbuotojų valdymas</a>
             </li>
             <li sec:authorize="hasRole('ROLE_ADMIN')">
-              <a th:href="@{/shop}"><span class="glyphicon glyphicon-shopping-cart"></span> Administravimas</a>
+              <a th:href="@{/shop}"><span class="glyphicon glyphicon-wrench"></span> Administravimas</a>
             </li>
             <li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_USER')">
               <a th:href="@{/inventory}"><span class="glyphicon glyphicon-shopping-cart"></span> Asortimentas</a>
+            </li>
+            <li>
+              <a th:href="@{/messages}"><span class="glyphicon glyphicon-envelope"></span> Žinutės</a>
             </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
@@ -82,6 +85,15 @@
           $(label).parent().find('input').addClass('validation-valid');
         }
       });
+    </script>
+    <script sec:authorize="hasRole('ROLE_ADMIN')">
+      var userLevel = 1;
+    </script>
+    <script sec:authorize="hasRole('ROLE_EMPLOYEE')">
+      var userLevel = 2;
+    </script>
+    <script sec:authorize="hasRole('ROLE_USER')">
+      var userLevel = 3;
     </script>
   </th:block>
 </body>

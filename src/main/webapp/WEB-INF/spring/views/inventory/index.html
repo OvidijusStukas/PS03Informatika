@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org/">
+  xmlns:th="http://www.thymeleaf.org/"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="fragments/header :: head">
 </head>
 <body>
 <th:block th:include="fragments/header :: top-menu"/>
 
 <a id="btn-add-new-car" class="btn btn-primary" href="#"><i class="glyphicon glyphicon-plus"></i> Sukurti naują automobilį</a>
+<a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')" id="btn-add-new-car" class="btn btn-primary" href="#"><i class="glyphicon glyphicon-plus"></i> Sukurti naują automobilį</a>
 
 <table id="car-table" class="table">
   <thead>
@@ -283,6 +285,24 @@
             <button type="submit" class="btn btn-primary">Keisti</button>
           </div>
         </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="order-service" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Užsisakyti paslaugą</h4>
+      </div>
+      <div class="modal-body">
+        <form></form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Atšaukti</button>
+        <button type="button" class="btn btn-primary">Užsisakyti</button>
       </div>
     </div>
   </div>
