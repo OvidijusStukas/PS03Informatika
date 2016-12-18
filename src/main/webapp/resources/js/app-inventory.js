@@ -103,6 +103,7 @@ function setupEdit(val){
 
     var children = val.children();
 
+    $('#edit-shop').find('option:eq('+val.data("shop")+')').prop('selected', true);
     $('#edit-brand').find('option:eq('+$(children[0]).data("brand")+')').prop('selected', true);
 
     //is pradziu uzsiloadint reikia paskui sitas:
