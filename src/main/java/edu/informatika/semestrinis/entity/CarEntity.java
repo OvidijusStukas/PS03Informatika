@@ -14,6 +14,13 @@ public class CarEntity implements Serializable {
   private int carId;
 
   @OneToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "UserId")
+  private UserEntity user;
+
+  @Transient
+  private int userId;
+
+  @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "ShopId")
   private ShopEntity shop;
 
@@ -111,6 +118,22 @@ public class CarEntity implements Serializable {
 
   public void setCarId(int carId) {
     this.carId = carId;
+  }
+
+  public UserEntity getUser() {
+    return user;
+  }
+
+  public void setUser(UserEntity user) {
+    this.user = user;
+  }
+
+  public int getUserId() {
+    return userId;
+  }
+
+  public void setUserId(int userId) {
+    this.userId = userId;
   }
 
   public ShopEntity getShop() {

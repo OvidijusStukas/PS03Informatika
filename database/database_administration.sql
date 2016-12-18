@@ -72,6 +72,7 @@ CREATE TABLE IF NOT EXISTS CarConfigurationPosition
 CREATE TABLE IF NOT EXISTS Car
 (
   CarId              INT            NOT NULL AUTO_INCREMENT,
+  UserId             INT            NULL,
   ShopId             INT            NOT NULL,
   BrandId            INT            NOT NULL,
   ModelId            INT            NOT NULL,
@@ -94,6 +95,7 @@ CREATE TABLE IF NOT EXISTS Car
   IsSold             BIT            NOT NULL,
 
   CONSTRAINT PK_Car__CarId              PRIMARY KEY (CarId),
+  CONSTRAINT FK_Car__UserId             FOREIGN KEY (UserId)             REFERENCES User(UserId),
   CONSTRAINT FK_Car__ShopId             FOREIGN KEY (ShopId)             REFERENCES Shop(ShopId),
   CONSTRAINT FK_Car__BrandId            FOREIGN KEY (BrandId)            REFERENCES CarConfigurationPosition(CarConfigurationPositionId),
   CONSTRAINT FK_Car__ModelId            FOREIGN KEY (ModelId)            REFERENCES CarConfigurationPosition(CarConfigurationPositionId),
