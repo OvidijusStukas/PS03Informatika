@@ -44,20 +44,13 @@ public class UserController {
   public ModelAndView management() {
     List<UserEntity> users = userRepository.getEntities(UserEntity.class);
     ModelAndView modelAndView = new ModelAndView("user/management");
+    modelAndView.addObject("shops", shopRepository.getEntities(ShopEntity.class));
+    modelAndView.addObject("model", new UserEntity());
     modelAndView.addObject("employees",
       users.stream()
         .filter(userEntity -> userEntity.getRole().getName().equalsIgnoreCase("ROLE_EMPLOYEE"))
         .collect(Collectors.toCollection(ArrayList::new)));
 
-    return modelAndView;
-  }
-
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
-  @RequestMapping(value = {"employee/add"}, method = RequestMethod.GET)
-  public ModelAndView addEmployee() {
-    ModelAndView modelAndView = new ModelAndView("user/add");
-    modelAndView.addObject("shops", shopRepository.getEntities(ShopEntity.class));
-    modelAndView.addObject("model", new UserEntity());
     return modelAndView;
   }
 

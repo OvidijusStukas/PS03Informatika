@@ -39,6 +39,6 @@ public class ShopController {
   public ModelAndView add(@ModelAttribute("model") ShopEntity shopEntity) {
     shopRepository.insertEntity(shopEntity);
 
-    return new ModelAndView("redirect:/add");
+    return new ModelAndView("redirect:/shop/");
   }
 }

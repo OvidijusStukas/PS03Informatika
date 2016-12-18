@@ -7,8 +7,9 @@ $(document).ready(function(){
 function setupButtons(){
 
     $("#btn-add").click(function(){
-        $("#register-form")[0].reset();
-        $("#register-form").validate().resetForm();
+        var $form = $("#register-form");
+        $form[0].reset();
+        $form.validate().resetForm();
         $("#add-shop-modal").modal().addClass("md-show");
     });
 }
