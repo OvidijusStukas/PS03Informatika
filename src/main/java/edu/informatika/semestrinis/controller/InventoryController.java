@@ -99,7 +99,7 @@ public class InventoryController {
     return modelAndView;
   }
 
-  protected boolean hasRole(String role) {
+  private boolean hasRole(String role) {
     // get security context from thread local
     SecurityContext context = SecurityContextHolder.getContext();
     if (context == null)

@@ -203,23 +203,17 @@ function setupServiceModal(model){
     $("#serviceCarId").val(model.data("id"));
 
     $.getJSON('/service/all', function(data) {
-
-        /*<div class="form-group">
-         <label for="edit-isSold">Parduota</label>
-         <input id="edit-isSold" name="isSold" type="checkbox"/>
-         </div>*/
-
         $.each(data, function(index, val) {
             var addText = "<div class='form-group'>" +
                 "<input type='checkbox' name='services["+index+"].active'>"+
                 "<label>"+val.description+" </label></br>"+
                 "<label> Kaina:</label>"+
-                "<input class='form-control' type='text' name='services["+index+"].price' value='"+val.price+"' disabled />"+
+                "<input class='form-control' type='text' name='services["+index+"].price' value='"+val.price+"' readonly />"+
                 "<input type='hidden' name='services["+index+"].carId' value='"+model.data("id")+"'>" +
                 "<input type='hidden' name='services["+index+"].typeId' value='"+val.typeId+"'>"+
+                "<input type='hidden' name='services["+index+"].description' value='"+val.description+"'>"+
                 "</div></br>";
             $("#insertTarget").append(addText);
         });
-
     });
 }
