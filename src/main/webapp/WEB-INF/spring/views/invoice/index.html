@@ -1,15 +1,33 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org/">
+      xmlns:th="http://www.thymeleaf.org/"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="fragments/header :: head">
 </head>
 <body>
 <th:block th:include="fragments/header :: top-menu"/>
 
+<a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')" id="btn-generate-invoice" href="#" class="btn btn-primary">Genereuoti sąskaitas</a>
 
+<table id="invoice-table" class="table">
+    <thead>
+        <tr>
+            <th>Pavadinimas</th>
+            <th>Numeris</th>
+            <th>Siuntėjas</th>
+            <th>Gavėjas</th>
+            <th>Suma</th>
+            <th>Generavimo data</th>
+            <th>Statusas</th>
+        </tr>
+    </thead>
+    <tbody>
+
+    </tbody>
+</table>
 
 <th:block th:include="fragments/header :: scripts"/>
-<script th:src="@{/js/app-inventory.js}" type="text/javascript"></script>
+<script th:src="@{/js/app-invoices.js}" type="text/javascript"></script>
 
 </body>
 </html>
