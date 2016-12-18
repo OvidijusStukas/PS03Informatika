@@ -4,6 +4,7 @@ import edu.informatika.semestrinis.entity.InvoiceEntity;
 import edu.informatika.semestrinis.helper.AuthenticationHelper;
 import edu.informatika.semestrinis.repository.BaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,6 +25,7 @@ public class InvoiceController {
         this.authenticationHelper = authenticationHelper;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = {"", "/"}, method = RequestMethod.GET)
     public ModelAndView index() {
         List<InvoiceEntity> invoices = invoiceRepository.getEntities(InvoiceEntity.class);
@@ -35,5 +37,11 @@ public class InvoiceController {
         modelAndView.addObject("invoices", invoices);
 
         return modelAndView;
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')")
+    @RequestMapping(value = "generate", method = RequestMethod.GET)
+    public ModelAndView generate() {
+        return new ModelAndView("redirect:/invoices");
     }
 }

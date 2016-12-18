@@ -1,15 +1,6 @@
 $(document).ready(function(){
-    setupButtons();
     setupDataTable();
 });
-
-function setupButtons(){
-    $("#btn-generate-invoice").click(function(){
-        $.post("invoices/generate").done(function(){
-            alert("Sąskaitos generuojamos!");
-        });
-    })
-}
 
 function setupDataTable(){
     $("#invoice-table").dataTable({
