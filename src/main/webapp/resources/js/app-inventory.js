@@ -2,6 +2,7 @@ $(document).ready(function(){
     setupModals();
     setupValidation();
     setupDataTable();
+    loadCarModel();
 });
 
 function setupModals(){
@@ -159,4 +160,16 @@ function setupDataTable(){
             }
         }
     });
+}
+
+function loadCarModel() {
+  $("#brand").change(function () {
+    $.getJSON('/inventory/getModels?brand='+$(this).val(), function(data) {
+      $("#model").find('option').remove();
+
+      $.each(data, function (_, model) {
+        $("#model").append($("<option>", {value: model.carConfigurationPositionId, text: model.name}));
+      });
+    });
+  }).change();
 }

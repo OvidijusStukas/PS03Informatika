@@ -2,7 +2,6 @@ package edu.informatika.semestrinis.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Date;
 
 @Entity
 @Table(name = "Car")
@@ -36,7 +35,7 @@ public class CarEntity implements Serializable {
   private int modelId;
 
   @Column(name = "Year")
-  private Date year;
+  private int year;
 
   @Column(name = "Price")
   private double price;
@@ -138,11 +137,11 @@ public class CarEntity implements Serializable {
     this.model = model;
   }
 
-  public Date getYear() {
+  public int getYear() {
     return year;
   }
 
-  public void setYear(Date year) {
+  public void setYear(int year) {
     this.year = year;
   }
 

@@ -32,42 +32,17 @@ public class InventoryController {
   @RequestMapping(value = {"", "/"}, method = RequestMethod.GET)
   public ModelAndView index() {
     List<CarEntity> cars = carRepository.getEntities(CarEntity.class);
+    List<ShopEntity> shops = shopRepository.getEntities(ShopEntity.class);
+    List<CarConfigurationPositionEntity> brands = carConfigurationRepository.getPositions("brand");
+    List<CarConfigurationPositionEntity> fuelTypes = carConfigurationRepository.getPositions("fuelType");
+    List<CarConfigurationPositionEntity> chassisTypes = carConfigurationRepository.getPositions("chassisType");
+    List<CarConfigurationPositionEntity> transmissionTypes = carConfigurationRepository.getPositions("transmissionType");
+    List<CarConfigurationPositionEntity> wheelPositions = carConfigurationRepository.getPositions("wheelPosition");
+    List<CarConfigurationPositionEntity> driveTypes = carConfigurationRepository.getPositions("driveType");
+
     ModelAndView modelAndView = new ModelAndView("inventory/index");
     modelAndView.addObject("cars", cars);
-
-    List<ShopEntity> shops = shopRepository.getEntities(ShopEntity.class);
-    List<CarConfigurationPositionEntity> brands = carConfigurationRepository.getPositions("brand");
-    List<CarConfigurationPositionEntity> fuelTypes = carConfigurationRepository.getPositions("fuelType");
-    List<CarConfigurationPositionEntity> chassisTypes = carConfigurationRepository.getPositions("chassisType");
-    List<CarConfigurationPositionEntity> transmissionTypes = carConfigurationRepository.getPositions("transmissionType");
-    List<CarConfigurationPositionEntity> wheelPositions = carConfigurationRepository.getPositions("wheelPosition");
-    List<CarConfigurationPositionEntity> driveTypes = carConfigurationRepository.getPositions("driveType");
-
-    modelAndView.addObject("newCarEntity", new CarEntity());
-    modelAndView.addObject("shops", shops);
-    modelAndView.addObject("brands", brands);
-    modelAndView.addObject("fuelTypes", fuelTypes);
-    modelAndView.addObject("chassisTypes", chassisTypes);
-    modelAndView.addObject("transmissionTypes", transmissionTypes);
-    modelAndView.addObject("wheelPositions", wheelPositions);
-    modelAndView.addObject("driveTypes", driveTypes);
-
-    return modelAndView;
-  }
-
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
-  @RequestMapping(value = "add", method = RequestMethod.GET)
-  public ModelAndView add() {
-    List<ShopEntity> shops = shopRepository.getEntities(ShopEntity.class);
-    List<CarConfigurationPositionEntity> brands = carConfigurationRepository.getPositions("brand");
-    List<CarConfigurationPositionEntity> fuelTypes = carConfigurationRepository.getPositions("fuelType");
-    List<CarConfigurationPositionEntity> chassisTypes = carConfigurationRepository.getPositions("chassisType");
-    List<CarConfigurationPositionEntity> transmissionTypes = carConfigurationRepository.getPositions("transmissionType");
-    List<CarConfigurationPositionEntity> wheelPositions = carConfigurationRepository.getPositions("wheelPosition");
-    List<CarConfigurationPositionEntity> driveTypes = carConfigurationRepository.getPositions("driveType");
-
-    ModelAndView modelAndView = new ModelAndView("inventory/add");
-    modelAndView.addObject("newCarEntity", new CarEntity());
+    modelAndView.addObject("model", new CarEntity());
     modelAndView.addObject("shops", shops);
     modelAndView.addObject("brands", brands);
     modelAndView.addObject("fuelTypes", fuelTypes);
@@ -82,16 +57,25 @@ public class InventoryController {
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @RequestMapping(value = "add", method = RequestMethod.POST)
   public ModelAndView add(@ModelAttribute("model") CarEntity carEntity) {
+    carEntity.setShop(shopRepository.getEntity(ShopEntity.class, carEntity.getShopId()));
+    carEntity.setBrand(carConfigurationRepository.getEntity(CarConfigurationPositionEntity.class, carEntity.getBrandId()));
+    carEntity.setModel(carConfigurationRepository.getEntity(CarConfigurationPositionEntity.class, carEntity.getModelId()));
+    carEntity.setFuel(carConfigurationRepository.getEntity(CarConfigurationPositionEntity.class, carEntity.getFuelId()));
+    carEntity.setChassis(carConfigurationRepository.getEntity(CarConfigurationPositionEntity.class, carEntity.getChassisId()));
+    carEntity.setTransmission(carConfigurationRepository.getEntity(CarConfigurationPositionEntity.class, carEntity.getTransmissionId()));
+    carEntity.setWheelPosition(carConfigurationRepository.getEntity(CarConfigurationPositionEntity.class, carEntity.getWheelPositionId()));
+    carEntity.setDrive(carConfigurationRepository.getEntity(CarConfigurationPositionEntity.class, carEntity.getDriveId()));
+
     carRepository.insertEntity(carEntity);
 
-    return new ModelAndView("redirect:/");
+    return new ModelAndView("redirect:/inventory");
   }
 
   @ResponseBody
   @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')")
   @RequestMapping(value = "getModels", method = RequestMethod.GET)
-  public List<CarConfigurationPositionEntity> getModels(@RequestParam String brandValue) {
-    return carConfigurationRepository.getPositions("model", brandValue);
+  public List<CarConfigurationPositionEntity> getModels(@RequestParam String brand) {
+    return carConfigurationRepository.getPositions("model", brand);
   }
 
   @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')")
