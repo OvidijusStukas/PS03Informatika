@@ -31,7 +31,7 @@ public class InvoiceController {
         List<InvoiceEntity> invoices = invoiceRepository.getEntities(InvoiceEntity.class);
 
         if (authenticationHelper.hasRole("ROLE_USER"))
-            invoices.removeIf(invoice -> invoice.getCar().getUser().getUserId() == authenticationHelper.getCurrentUserId());
+            invoices.removeIf(invoice -> invoice.getCar().getUser().getUserId() != authenticationHelper.getCurrentUserId());
 
         ModelAndView modelAndView = new ModelAndView("invoice/index");
         modelAndView.addObject("invoices", invoices);
