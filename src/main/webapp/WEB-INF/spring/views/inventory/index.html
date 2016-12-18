@@ -33,26 +33,26 @@
   </tr>
   </thead>
   <tbody>
-  <tr th:each="car : ${cars}">
-    <th th:text="${car.getBrand().getName()}"></th>
-    <th th:text="${car.getModel().getName()}"></th>
-    <th th:text="${car.getYear()}"></th>
-    <th th:text="${car.getPrice()}"></th>
-    <th th:text="${car.getDistanceTraveled()}"></th>
-    <th th:text="${car.getFuel().getName()}"></th>
-    <th th:text="${car.getChassis().getName()}"></th>
-    <th th:text="${car.getWorkingCapacity()}"></th>
-    <th th:text="${car.getTransmission().getName()}"></th>
-    <th th:text="${car.getPower()}"></th>
-    <th th:text="${car.getWheelPosition().getName()}"></th>
-    <th th:text="${car.getSeatNumber()}"></th>
-    <th th:text="${car.getDoorNumber()}"></th>
-    <th th:text="${car.getColor()}"></th>
-    <th th:text="${car.getDrive().getName()}"></th>
-    <th th:text="${car.isWithDefects()}"></th>
-    <th th:text="${car.isCentralLock()}"></th>
-    <th th:text="${car.isAirBags()}"></th>
-    <th th:text="${car.getIsSold()}"></th>
+  <tr class="carEntity" th:data-id="${car.getCarId()}" th:each="car : ${cars}">
+    <th th:data-brand="${car.getBrand().getValue()}" th:text="${car.getBrand().getName()}"></th>
+    <th th:data-model="${car.getModel().getValue()}" th:text="${car.getModel().getName()}"></th>
+    <th th:data-year="${car.getYear()}" th:text="${car.getYear()}"></th>
+    <th th:data-price="${car.getPrice()}" th:text="${car.getPrice()}"></th>
+    <th th:data-distance-traveled="${car.getDistanceTraveled()}" th:text="${car.getDistanceTraveled()}"></th>
+    <th th:data-fuel="${car.getFuel().getValue()}" th:text="${car.getFuel().getName()}"></th>
+    <th th:data-chassis="${car.getChassis().getValue()}" th:text="${car.getChassis().getName()}"></th>
+    <th th:data-working-capacity="${car.getWorkingCapacity()}" th:text="${car.getWorkingCapacity()}"></th>
+    <th th:data-transmission="${car.getTransmission().getValue()}" th:text="${car.getTransmission().getName()}"></th>
+    <th th:data-power="${car.getPower()}" th:text="${car.getPower()}"></th>
+    <th th:data-wheel-position="${car.getWheelPosition().getValue()}" th:text="${car.getWheelPosition().getName()}"></th>
+    <th th:data-seat-number="${car.getSeatNumber()}" th:text="${car.getSeatNumber()}"></th>
+    <th th:data-door-number="${car.getDoorNumber()}" th:text="${car.getDoorNumber()}"></th>
+    <th th:data-color="${car.getColor()}" th:text="${car.getColor()}"></th>
+    <th th:data-drive="${car.getDrive().getValue()}" th:text="${car.getDrive().getName()}"></th>
+    <th th:data-is-with-defects="${car.isWithDefects()}" th:text="${car.isWithDefects()}"></th>
+    <th th:data-is-central-lock="${car.isCentralLock()}" th:text="${car.isCentralLock()}"></th>
+    <th th:data-is-air-bags="${car.isAirBags()}" th:text="${car.isAirBags()}"></th>
+    <th th:data-is-sold="${car.getIsSold()}" th:text="${car.getIsSold()}"></th>
   </tr>
   </tbody>
 </table>
@@ -62,7 +62,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">Pridėti nauja parduotuvę</h4>
+        <h4 class="modal-title">Pridėti nauja automobilį</h4>
       </div>
       <div class="modal-body">
         <form id="add-new-car-form" class="form-signin" th:action="@{/inventory/add}" th:object="${newCarEntity}" method="POST">
@@ -155,6 +155,116 @@
           <div class="form-group">
             <label for="isSold">Parduota</label>
             <input id="isSold" th:field="*{isSold}" type="checkbox"/>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Uždaryti</button>
+            <button type="submit" class="btn btn-primary">Pridėti</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="edit-car" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Redaguoti automobilį</h4>
+      </div>
+      <div class="modal-body">
+        <form id="edit-car-form" class="form-signin" th:action="@{/inventory/edit}" method="POST">
+          <input id="edit-carId" type="hidden" name="carId">
+          <div class="form-group">
+            <label for="edit-brand">Markė</label>
+            <select id="edit-brand" class="form-control" name="brandId">
+              <option th:each="brand : ${brands}" th:value="${brand.value}" th:text="${brand.name}"></option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="edit-model">Modelis</label>
+            <select id="edit-model" class="form-control" name="modelId">
+              <option value="-1">Pasirinkite modelį</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="edit-years">Metai</label>
+            <input id="edit-years" class="form-control" name="year" type="text" placeholder="Metai"/>
+          </div>
+          <div class="form-group">
+            <label for="edit-price">Kaina</label>
+            <input id="edit-price" class="form-control" name="price" type="text" placeholder="Kaina"/>
+          </div>
+          <div class="form-group">
+            <label for="edit-millage">Nuvažiuotas atstumas</label>
+            <input id="edit-millage" class="form-control" name="distanceTraveled" type="text" placeholder="Nuvažiuotas atstumas"/>
+          </div>
+          <div class="form-group">
+            <label for="edit-fuelType">Kuro tipas</label>
+            <select id="edit-fuelType" class="form-control" name="fuelId">
+              <option th:each="fuelType : ${fuelTypes}" th:value="${fuelType.value}" th:text="${fuelType.name}"></option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="edit-chassis">Kėbulo tipas</label>
+            <select id="edit-chassis" class="form-control" name="chassisId">
+              <option th:each="chassisType : ${chassisTypes}" th:value="${chassisType.value}" th:text="${chassisType.name}"></option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="edit-workingCapacity">Litražas</label>
+            <input id="edit-workingCapacity" class="form-control" name="workingCapacity" type="text" placeholder="Litražas"/>
+          </div>
+          <div class="form-group">
+            <label for="edit-transmission">Transmisija</label>
+            <select id="edit-transmission" class="form-control" name="transmissionId">
+              <option th:each="transmissionType : ${transmissionTypes}" th:value="${transmissionType.value}" th:text="${transmissionType.name}"></option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="edit-power">Galia</label>
+            <input id="edit-power" class="form-control" name="power" type="text" placeholder="Galia"/>
+          </div>
+          <div class="form-group">
+            <label for="edit-wheelPosition">Vairo pozicija</label>
+            <select id="edit-wheelPosition" class="form-control" name="wheelPositionId">
+              <option th:each="wheelPosition : ${wheelPositions}" th:value="${wheelPosition.value}" th:text="${wheelPosition.name}"></option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="edit-seatNumber">Sėdimų vietų kiekis</label>
+            <input id="edit-seatNumber" class="form-control" name="seatNumber" type="text" placeholder="Sėdimų vietų kiekis"/>
+          </div>
+          <div class="form-group">
+            <label for="edit-doorNumber">Durų skaičius</label>
+            <input id="edit-doorNumber" class="form-control" name="doorNumber" type="text" placeholder="Durų skaičius"/>
+          </div>
+          <div class="form-group">
+            <label for="edit-color">Spalva</label>
+            <input id="edit-color" class="form-control" name="color" type="text" placeholder="Spalva"/>
+          </div>
+          <div class="form-group">
+            <label for="edit-driveType">Varantieji ratai</label>
+            <select id="edit-driveType" class="form-control" name="driveId">
+              <option th:each="driveType : ${driveTypes}" th:value="${driveType.value}" th:text="${driveType.name}"></option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="edit-withDefects">Turi defektų</label>
+            <input id="edit-withDefects" name="withDefects" type="checkbox"/>
+          </div>
+          <div class="form-group">
+            <label for="edit-centralLock">Centrinis užraktas</label>
+            <input id="edit-centralLock" name="centralLock" type="checkbox"/>
+          </div>
+          <div class="form-group">
+            <label for="edit-airBags">Oro pagalvės</label>
+            <input id="edit-airBags" name="airBags" type="checkbox"/>
+          </div>
+          <div class="form-group">
+            <label for="edit-isSold">Parduota</label>
+            <input id="edit-isSold" name="isSold" type="checkbox"/>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Uždaryti</button>
