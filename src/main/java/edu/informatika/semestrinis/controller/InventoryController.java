@@ -2,14 +2,13 @@ package edu.informatika.semestrinis.controller;
 
 import edu.informatika.semestrinis.entity.CarConfigurationPositionEntity;
 import edu.informatika.semestrinis.entity.CarEntity;
+import edu.informatika.semestrinis.entity.ShopEntity;
 import edu.informatika.semestrinis.repository.BaseRepository;
 import edu.informatika.semestrinis.repository.CarConfigurationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -19,11 +18,13 @@ import java.util.List;
 public class InventoryController {
 
   private final BaseRepository<CarEntity> carRepository;
+  private final BaseRepository<ShopEntity> shopRepository;
   private final CarConfigurationRepository carConfigurationRepository;
 
   @Autowired
-  public InventoryController(BaseRepository<CarEntity> carRepository, CarConfigurationRepository carConfigurationRepository) {
+  public InventoryController(BaseRepository<CarEntity> carRepository, BaseRepository<ShopEntity> shopRepository, CarConfigurationRepository carConfigurationRepository) {
     this.carRepository = carRepository;
+    this.shopRepository = shopRepository;
     this.carConfigurationRepository = carConfigurationRepository;
   }
 
@@ -40,10 +41,23 @@ public class InventoryController {
   @PreAuthorize("hasRole('ROLE_ADMIN')")
   @RequestMapping(value = "add", method = RequestMethod.GET)
   public ModelAndView add() {
-    List<CarConfigurationPositionEntity> brandPositions = carConfigurationRepository.getPositions("brand");
+    List<ShopEntity> shops = shopRepository.getEntities(ShopEntity.class);
+    List<CarConfigurationPositionEntity> brands = carConfigurationRepository.getPositions("brand");
+    List<CarConfigurationPositionEntity> fuelTypes = carConfigurationRepository.getPositions("fuelType");
+    List<CarConfigurationPositionEntity> chassisTypes = carConfigurationRepository.getPositions("chassisType");
+    List<CarConfigurationPositionEntity> transmissionTypes = carConfigurationRepository.getPositions("transmissionType");
+    List<CarConfigurationPositionEntity> wheelPositions = carConfigurationRepository.getPositions("wheelPosition");
+    List<CarConfigurationPositionEntity> driveTypes = carConfigurationRepository.getPositions("driveType");
 
     ModelAndView modelAndView = new ModelAndView("inventory/add");
     modelAndView.addObject("model", new CarEntity());
+    modelAndView.addObject("shops", shops);
+    modelAndView.addObject("brands", brands);
+    modelAndView.addObject("fuelTypes", fuelTypes);
+    modelAndView.addObject("chassisTypes", chassisTypes);
+    modelAndView.addObject("transmissionTypes", transmissionTypes);
+    modelAndView.addObject("wheelPositions", wheelPositions);
+    modelAndView.addObject("driveTypes", driveTypes);
 
     return modelAndView;
   }
@@ -56,4 +70,10 @@ public class InventoryController {
     return new ModelAndView("redirect:/add");
   }
 
+  @ResponseBody
+  @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')")
+  @RequestMapping(value = "getModels", method = RequestMethod.GET)
+  public List<CarConfigurationPositionEntity> getModels(@RequestParam String brandValue) {
+    return carConfigurationRepository.getPositions("model", brandValue);
+  }
 }

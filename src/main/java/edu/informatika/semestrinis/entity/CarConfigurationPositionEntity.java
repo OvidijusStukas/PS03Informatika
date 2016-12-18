@@ -14,7 +14,7 @@ public class CarConfigurationPositionEntity implements Serializable {
   private int carConfigurationPositionId;
 
   @OneToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "CarConfigurationIndexEntityId")
+  @JoinColumn(name = "CarConfigurationIndexId")
   private CarConfigurationIndexEntity index;
 
   @Column(name = "Name")
