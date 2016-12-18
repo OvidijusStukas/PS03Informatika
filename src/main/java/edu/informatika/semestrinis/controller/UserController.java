@@ -40,6 +40,7 @@ public class UserController {
     return new ModelAndView("user/login");
   }
 
+  @PreAuthorize("hasRole('ROLE_ADMIN')")
   @RequestMapping(value = "management", method = RequestMethod.GET)
   public ModelAndView management() {
     List<UserEntity> users = userRepository.getEntities(UserEntity.class);
