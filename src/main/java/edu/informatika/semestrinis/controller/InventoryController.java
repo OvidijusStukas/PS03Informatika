@@ -28,7 +28,7 @@ public class InventoryController {
     this.carConfigurationRepository = carConfigurationRepository;
   }
 
-  @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')")
+  @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_USER')")
   @RequestMapping(value = {"", "/"}, method = RequestMethod.GET)
   public ModelAndView index() {
     List<CarEntity> cars = carRepository.getEntities(CarEntity.class);
@@ -93,5 +93,15 @@ public class InventoryController {
     carRepository.updateEntity(car);
 
     return new ModelAndView("redirect:/");
+  }
+
+  @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_USER')")
+  @RequestMapping(value = "edit", method = RequestMethod.GET)
+  public ModelAndView order(@RequestParam int id) {
+    CarEntity car = carRepository.getEntity(CarEntity.class, id);
+    ModelAndView modelAndView = new ModelAndView("inventory/order");
+    modelAndView.addObject("model", car);
+
+    return modelAndView;
   }
 }
