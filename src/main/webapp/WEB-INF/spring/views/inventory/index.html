@@ -6,7 +6,7 @@
 <body>
 <th:block th:include="fragments/header :: top-menu"/>
 
-<a th:href="@{/inventory/add}"><i class="glyphicon glyphicon-plus"></i> Sukurti naują automobilį</a>
+<a id="btn-add-new-car" class="btn btn-primary" href="#"><i class="glyphicon glyphicon-plus"></i> Sukurti naują automobilį</a>
 
 <table class="table">
   <thead>
@@ -52,11 +52,122 @@
     <th th:text="${car.isWithDefects()}"></th>
     <th th:text="${car.isCentralLock()}"></th>
     <th th:text="${car.isAirBags()}"></th>
-    <th th:text="${car.isSold()}"></th>
+    <th th:text="${car.getIsSold()}"></th>
   </tr>
   </tbody>
 </table>
 
+<div id="add-new-car" class="modal fade" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Pridėti nauja parduotuvę</h4>
+      </div>
+      <div class="modal-body">
+        <form id="add-new-car-form" class="form-signin" th:action="@{/inventory/add}" th:object="${newCarEntity}" method="POST">
+          <div class="form-group">
+            <label for="brand">Markė</label>
+            <select id="brand" class="form-control" th:field="*{brandId}">
+              <option th:each="brand : ${brands}" th:value="${brand.value}" th:text="${brand.name}"></option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="model">Modelis</label>
+            <select id="model" class="form-control" th:field="*{modelId}">
+              <option value="-1">Pasirinkite modelį</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="years">Metai</label>
+            <input id="years" class="form-control" th:field="*{year}" type="text" placeholder="Metai"/>
+          </div>
+          <div class="form-group">
+            <label for="price">Kaina</label>
+            <input id="price" class="form-control" th:field="*{price}" type="text" placeholder="Kaina"/>
+          </div>
+          <div class="form-group">
+            <label for="millage">Nuvažiuotas atstumas</label>
+            <input id="millage" class="form-control" th:field="*{distanceTraveled}" type="text" placeholder="Nuvažiuotas atstumas"/>
+          </div>
+          <div class="form-group">
+            <label for="fuelType">Kuro tipas</label>
+            <select id="fuelType" class="form-control" th:field="*{fuelId}">
+              <option th:each="fuelType : ${fuelTypes}" th:value="${fuelType.value}" th:text="${fuelType.name}"></option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="chassis">Kėbulo tipas</label>
+            <select id="chassis" class="form-control" th:field="*{chassisId}">
+              <option th:each="chassisType : ${chassisTypes}" th:value="${chassisType.value}" th:text="${chassisType.name}"></option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="workingCapacity">Litražas</label>
+            <input id="workingCapacity" class="form-control" th:field="*{workingCapacity}" type="text" placeholder="Litražas"/>
+          </div>
+          <div class="form-group">
+            <label for="transmission">Transmisija</label>
+            <select id="transmission" class="form-control" th:field="*{transmissionId}">
+              <option th:each="transmissionType : ${transmissionTypes}" th:value="${transmissionType.value}" th:text="${transmissionType.name}"></option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="power">Galia</label>
+            <input id="power" class="form-control" th:field="*{power}" type="text" placeholder="Galia"/>
+          </div>
+          <div class="form-group">
+            <label for="wheelPosition">Vairo pozicija</label>
+            <select id="wheelPosition" class="form-control" th:field="*{wheelPositionId}">
+              <option th:each="wheelPosition : ${wheelPositions}" th:value="${wheelPosition.value}" th:text="${wheelPosition.name}"></option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="seatNumber">Sėdimų vietų kiekis</label>
+            <input id="seatNumber" class="form-control" th:field="*{seatNumber}" type="text" placeholder="Sėdimų vietų kiekis"/>
+          </div>
+          <div class="form-group">
+            <label for="doorNumber">Durų skaičius</label>
+            <input id="doorNumber" class="form-control" th:field="*{doorNumber}" type="text" placeholder="Durų skaičius"/>
+          </div>
+          <div class="form-group">
+            <label for="color">Spalva</label>
+            <input id="color" class="form-control" th:field="*{color}" type="text" placeholder="Spalva"/>
+          </div>
+          <div class="form-group">
+            <label for="driveType">Varantieji ratai</label>
+            <select id="driveType" class="form-control" th:field="*{driveId}">
+              <option th:each="driveType : ${driveTypes}" th:value="${driveType.value}" th:text="${driveType.name}"></option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="withDefects">Turi defektų</label>
+            <input id="withDefects" th:field="*{withDefects}" type="checkbox"/>
+          </div>
+          <div class="form-group">
+            <label for="centralLock">Centrinis užraktas</label>
+            <input id="centralLock" th:field="*{centralLock}" type="checkbox"/>
+          </div>
+          <div class="form-group">
+            <label for="airBags">Oro pagalvės</label>
+            <input id="airBags" th:field="*{airBags}" type="checkbox"/>
+          </div>
+          <div class="form-group">
+            <label for="isSold">Parduota</label>
+            <input id="isSold" th:field="*{isSold}" type="checkbox"/>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Uždaryti</button>
+            <button type="submit" class="btn btn-primary">Pridėti</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
 <th:block th:include="fragments/header :: scripts"/>
+<script src="/js/app-inventory.js" type="text/javascript"></script>
+
 </body>
 </html>

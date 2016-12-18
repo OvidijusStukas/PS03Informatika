@@ -35,6 +35,23 @@ public class InventoryController {
     ModelAndView modelAndView = new ModelAndView("inventory/index");
     modelAndView.addObject("cars", cars);
 
+    List<ShopEntity> shops = shopRepository.getEntities(ShopEntity.class);
+    List<CarConfigurationPositionEntity> brands = carConfigurationRepository.getPositions("brand");
+    List<CarConfigurationPositionEntity> fuelTypes = carConfigurationRepository.getPositions("fuelType");
+    List<CarConfigurationPositionEntity> chassisTypes = carConfigurationRepository.getPositions("chassisType");
+    List<CarConfigurationPositionEntity> transmissionTypes = carConfigurationRepository.getPositions("transmissionType");
+    List<CarConfigurationPositionEntity> wheelPositions = carConfigurationRepository.getPositions("wheelPosition");
+    List<CarConfigurationPositionEntity> driveTypes = carConfigurationRepository.getPositions("driveType");
+
+    modelAndView.addObject("newCarEntity", new CarEntity());
+    modelAndView.addObject("shops", shops);
+    modelAndView.addObject("brands", brands);
+    modelAndView.addObject("fuelTypes", fuelTypes);
+    modelAndView.addObject("chassisTypes", chassisTypes);
+    modelAndView.addObject("transmissionTypes", transmissionTypes);
+    modelAndView.addObject("wheelPositions", wheelPositions);
+    modelAndView.addObject("driveTypes", driveTypes);
+
     return modelAndView;
   }
 
@@ -50,7 +67,7 @@ public class InventoryController {
     List<CarConfigurationPositionEntity> driveTypes = carConfigurationRepository.getPositions("driveType");
 
     ModelAndView modelAndView = new ModelAndView("inventory/add");
-    modelAndView.addObject("model", new CarEntity());
+    modelAndView.addObject("newCarEntity", new CarEntity());
     modelAndView.addObject("shops", shops);
     modelAndView.addObject("brands", brands);
     modelAndView.addObject("fuelTypes", fuelTypes);

@@ -18,13 +18,22 @@ public class CarEntity implements Serializable {
   @JoinColumn(name = "ShopId")
   private ShopEntity shop;
 
+  @Transient
+  private int shopId;
+
   @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "BrandId")
   private CarConfigurationPositionEntity brand;
 
+  @Transient
+  private int brandId;
+
   @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "ModelId")
   private CarConfigurationPositionEntity model;
+
+  @Transient
+  private int modelId;
 
   @Column(name = "Year")
   private Date year;
@@ -39,9 +48,15 @@ public class CarEntity implements Serializable {
   @JoinColumn(name = "FuelTypeId")
   private CarConfigurationPositionEntity fuel;
 
+  @Transient
+  private int fuelId;
+
   @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "ChassisTypeId")
   private CarConfigurationPositionEntity chassis;
+
+  @Transient
+  private int chassisId;
 
   @Column(name = "WorkingCapacity")
   private double workingCapacity;
@@ -50,12 +65,18 @@ public class CarEntity implements Serializable {
   @JoinColumn(name = "TransmissionTypeId")
   private CarConfigurationPositionEntity transmission;
 
+  @Transient
+  private int transmissionId;
+
   @Column(name = "Power")
   private int power;
 
   @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "WheelPositionId")
   private CarConfigurationPositionEntity wheelPosition;
+
+  @Transient
+  private int wheelPositionId;
 
   @Column(name = "SeatNumber")
   private int seatNumber;
@@ -69,6 +90,9 @@ public class CarEntity implements Serializable {
   @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "DriveTypeId")
   private CarConfigurationPositionEntity drive;
+
+  @Transient
+  private int driveId;
 
   @Column(name = "WithDefects")
   private boolean withDefects;
@@ -242,11 +266,75 @@ public class CarEntity implements Serializable {
     this.airBags = airBags;
   }
 
-  public boolean isSold() {
+  public boolean getIsSold() {
     return isSold;
   }
 
-  public void setSold(boolean sold) {
+  public void setIsSold(boolean sold) {
     isSold = sold;
+  }
+
+  public int getFuelId() {
+    return fuelId;
+  }
+
+  public void setFuelId(int fuelId) {
+    this.fuelId = fuelId;
+  }
+
+  public int getShopId() {
+    return shopId;
+  }
+
+  public void setShopId(int shopId) {
+    this.shopId = shopId;
+  }
+
+  public int getBrandId() {
+    return brandId;
+  }
+
+  public void setBrandId(int brandId) {
+    this.brandId = brandId;
+  }
+
+  public int getChassisId() {
+    return chassisId;
+  }
+
+  public void setChassisId(int chassisId) {
+    this.chassisId = chassisId;
+  }
+
+  public int getTransmissionId() {
+    return transmissionId;
+  }
+
+  public void setTransmissionId(int transmissionId) {
+    this.transmissionId = transmissionId;
+  }
+
+  public int getWheelPositionId() {
+    return wheelPositionId;
+  }
+
+  public void setWheelPositionId(int wheelPositionId) {
+    this.wheelPositionId = wheelPositionId;
+  }
+
+  public int getDriveId() {
+    return driveId;
+  }
+
+  public void setDriveId(int driveId) {
+    this.driveId = driveId;
+  }
+
+  public int getModelId() {
+    return modelId;
+  }
+
+  public void setModelId(int modelId) {
+    this.modelId = modelId;
   }
 }
