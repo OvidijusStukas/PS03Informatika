@@ -61,9 +61,9 @@ public class InventoryController {
     return modelAndView;
   }
 
-  @PreAuthorize("hasRole('ROLE_ADMIN')")
+  @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')")
   @RequestMapping(value = "add", method = RequestMethod.POST)
-  public ModelAndView add(@ModelAttribute("model") CarEntity carEntity) {
+  public ModelAndView add(@ModelAttribute CarEntity carEntity) {
     carEntity.setShop(shopRepository.getEntity(ShopEntity.class, carEntity.getShopId()));
     carEntity.setBrand(carConfigurationRepository.getEntity(CarConfigurationPositionEntity.class, carEntity.getBrandId()));
     carEntity.setModel(carConfigurationRepository.getEntity(CarConfigurationPositionEntity.class, carEntity.getModelId()));

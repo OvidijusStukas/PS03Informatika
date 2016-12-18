@@ -183,29 +183,29 @@
       <div class="modal-body">
         <form id="edit-car-form" class="form-signin" th:action="@{/inventory/add}" method="POST">
           <input id="edit-carId" type="hidden" name="carId">
-          <div class="form-group">
+          <div class="form-group" th:style="${#authorization.expression('hasRole(''ROLE_ADMIN'')') ? '' : 'display: none;'}">
             <label>Parduotuvė</label>
             <select id="edit-shop" class="form-control" name="shopId">
               <option th:each="shop : ${shops}" th:value="${shop.shopId}" th:text="${T(java.lang.String).format('%s, %s %s-%s', shop.country, shop.city, shop.street, shop.streetNumber)}"></option>
             </select>
           </div>
-          <div class="form-group">
+          <div class="form-group" th:style="${#authorization.expression('hasRole(''ROLE_ADMIN'')') ? '' : 'display: none;'}">
             <label for="edit-brand">Markė</label>
             <select id="edit-brand" class="form-control" name="brandId">
               <option th:each="brand : ${brands}" th:data="${brand.value}" th:value="${brand.carConfigurationPositionId}" th:text="${brand.name}"></option>
             </select>
           </div>
-          <div class="form-group">
+          <div class="form-group" th:style="${#authorization.expression('hasRole(''ROLE_ADMIN'')') ? '' : 'display: none;'}">
             <label for="edit-model">Modelis</label>
             <select id="edit-model" class="form-control" name="modelId">
               <option value="-1">Pasirinkite modelį</option>
             </select>
           </div>
-          <div class="form-group">
+          <div class="form-group" th:style="${#authorization.expression('hasRole(''ROLE_ADMIN'')') ? '' : 'display: none;'}">
             <label for="edit-years">Metai</label>
             <input id="edit-years" class="form-control" name="year" type="text" placeholder="Metai"/>
           </div>
-          <div class="form-group">
+          <div class="form-group" th:style="${#authorization.expression('hasRole(''ROLE_ADMIN'')') ? '' : 'display: none;'}">
             <label for="edit-price">Kaina</label>
             <input id="edit-price" class="form-control" name="price" type="text" placeholder="Kaina"/>
           </div>
@@ -213,65 +213,65 @@
             <label for="edit-millage">Nuvažiuotas atstumas</label>
             <input id="edit-millage" class="form-control" name="distanceTraveled" type="text" placeholder="Nuvažiuotas atstumas"/>
           </div>
-          <div class="form-group">
+          <div class="form-group" th:style="${#authorization.expression('hasRole(''ROLE_ADMIN'')') ? '' : 'display: none;'}">
             <label for="edit-fuelType">Kuro tipas</label>
             <select id="edit-fuelType" class="form-control" name="fuelId">
               <option th:each="fuelType : ${fuelTypes}" th:value="${fuelType.carConfigurationPositionId}" th:text="${fuelType.name}"></option>
             </select>
           </div>
-          <div class="form-group">
+          <div class="form-group" th:style="${#authorization.expression('hasRole(''ROLE_ADMIN'')') ? '' : 'display: none;'}">
             <label for="edit-chassis">Kėbulo tipas</label>
             <select id="edit-chassis" class="form-control" name="chassisId">
               <option th:each="chassisType : ${chassisTypes}" th:value="${chassisType.carConfigurationPositionId}" th:text="${chassisType.name}"></option>
             </select>
           </div>
-          <div class="form-group">
+          <div class="form-group" th:style="${#authorization.expression('hasRole(''ROLE_ADMIN'')') ? '' : 'display: none;'}">
             <label for="edit-workingCapacity">Litražas</label>
             <input id="edit-workingCapacity" class="form-control" name="workingCapacity" type="text" placeholder="Litražas"/>
           </div>
-          <div class="form-group">
+          <div class="form-group" th:style="${#authorization.expression('hasRole(''ROLE_ADMIN'')') ? '' : 'display: none;'}">
             <label for="edit-transmission">Transmisija</label>
             <select id="edit-transmission" class="form-control" name="transmissionId">
               <option th:each="transmissionType : ${transmissionTypes}" th:value="${transmissionType.carConfigurationPositionId}" th:text="${transmissionType.name}"></option>
             </select>
           </div>
-          <div class="form-group">
+          <div class="form-group" th:style="${#authorization.expression('hasRole(''ROLE_ADMIN'')') ? '' : 'display: none;'}">
             <label for="edit-power">Galia</label>
             <input id="edit-power" class="form-control" name="power" type="text" placeholder="Galia"/>
           </div>
-          <div class="form-group">
+          <div class="form-group" th:style="${#authorization.expression('hasRole(''ROLE_ADMIN'')') ? '' : 'display: none;'}">
             <label for="edit-wheelPosition">Vairo pozicija</label>
             <select id="edit-wheelPosition" class="form-control" name="wheelPositionId">
               <option th:each="wheelPosition : ${wheelPositions}" th:value="${wheelPosition.carConfigurationPositionId}" th:text="${wheelPosition.name}"></option>
             </select>
           </div>
-          <div class="form-group">
+          <div class="form-group" th:style="${#authorization.expression('hasRole(''ROLE_ADMIN'')') ? '' : 'display: none;'}">
             <label for="edit-seatNumber">Sėdimų vietų kiekis</label>
             <input id="edit-seatNumber" class="form-control" name="seatNumber" type="text" placeholder="Sėdimų vietų kiekis"/>
           </div>
-          <div class="form-group">
+          <div class="form-group" th:style="${#authorization.expression('hasRole(''ROLE_ADMIN'')') ? '' : 'display: none;'}">
             <label for="edit-doorNumber">Durų skaičius</label>
             <input id="edit-doorNumber" class="form-control" name="doorNumber" type="text" placeholder="Durų skaičius"/>
           </div>
-          <div class="form-group">
+          <div class="form-group" th:style="${#authorization.expression('hasRole(''ROLE_ADMIN'')') ? '' : 'display: none;'}">
             <label for="edit-color">Spalva</label>
             <input id="edit-color" class="form-control" name="color" type="text" placeholder="Spalva"/>
           </div>
-          <div class="form-group">
+          <div class="form-group" th:style="${#authorization.expression('hasRole(''ROLE_ADMIN'')') ? '' : 'display: none;'}">
             <label for="edit-driveType">Varantieji ratai</label>
             <select id="edit-driveType" class="form-control" name="driveId">
               <option th:each="driveType : ${driveTypes}" th:value="${driveType.carConfigurationPositionId}" th:text="${driveType.name}"></option>
             </select>
           </div>
-          <div class="form-group">
+          <div class="form-group" th:style="${#authorization.expression('hasRole(''ROLE_ADMIN'')') ? '' : 'display: none;'}">
             <label for="edit-withDefects">Turi defektų</label>
             <input id="edit-withDefects" name="withDefects" type="checkbox"/>
           </div>
-          <div class="form-group">
+          <div class="form-group" th:style="${#authorization.expression('hasRole(''ROLE_ADMIN'')') ? '' : 'display: none;'}">
             <label for="edit-centralLock">Centrinis užraktas</label>
             <input id="edit-centralLock" name="centralLock" type="checkbox"/>
           </div>
-          <div class="form-group">
+          <div class="form-group" th:style="${#authorization.expression('hasRole(''ROLE_ADMIN'')') ? '' : 'display: none;'}">
             <label for="edit-airBags">Oro pagalvės</label>
             <input id="edit-airBags" name="airBags" type="checkbox"/>
           </div>
