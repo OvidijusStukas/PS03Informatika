@@ -75,7 +75,7 @@ public class InventoryController {
   @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')")
   @RequestMapping(value = "getModels", method = RequestMethod.GET)
   public List<CarConfigurationPositionEntity> getModels(@RequestParam String brand) {
-    return carConfigurationRepository.getPositions("model", brand);
+    return carConfigurationRepository.getModelPositions(brand);
   }
 
   @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')")

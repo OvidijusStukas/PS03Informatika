@@ -49,10 +49,10 @@
     <th th:data-door-number="${car.getDoorNumber()}" th:text="${car.getDoorNumber()}"></th>
     <th th:data-color="${car.getColor()}" th:text="${car.getColor()}"></th>
     <th th:data-drive="${car.getDrive().getValue()}" th:text="${car.getDrive().getName()}"></th>
-    <th th:data-is-with-defects="${car.isWithDefects()}" th:text="${car.isWithDefects()}"></th>
-    <th th:data-is-central-lock="${car.isCentralLock()}" th:text="${car.isCentralLock()}"></th>
-    <th th:data-is-air-bags="${car.isAirBags()}" th:text="${car.isAirBags()}"></th>
-    <th th:data-is-sold="${car.getIsSold()}" th:text="${car.getIsSold()}"></th>
+    <th th:data-is-with-defects="${car.isWithDefects()}" th:text="${car.isWithDefects() ? 'taip' : 'ne'}"></th>
+    <th th:data-is-central-lock="${car.isCentralLock()}" th:text="${car.isCentralLock() ? 'taip' : 'ne'}"></th>
+    <th th:data-is-air-bags="${car.isAirBags()}" th:text="${car.isAirBags() ? 'taip' : 'ne'}"></th>
+    <th th:data-is-sold="${car.getIsSold()}" th:text="${car.getIsSold() ? 'taip' : 'ne'}"></th>
   </tr>
   </tbody>
 </table>
@@ -75,7 +75,7 @@
           <div class="form-group">
             <label for="brand">Markė</label>
             <select id="brand" class="form-control" th:field="*{brandId}">
-              <option th:each="brand : ${brands}" th:value="${brand.value}" th:text="${brand.name}"></option>
+              <option th:each="brand : ${brands}" th:data="${brand.value}" th:value="${brand.carConfigurationPositionId}" th:text="${brand.name}"></option>
             </select>
           </div>
           <div class="form-group">
@@ -99,13 +99,13 @@
           <div class="form-group">
             <label for="fuelType">Kuro tipas</label>
             <select id="fuelType" class="form-control" th:field="*{fuelId}">
-              <option th:each="fuelType : ${fuelTypes}" th:value="${fuelType.value}" th:text="${fuelType.name}"></option>
+              <option th:each="fuelType : ${fuelTypes}" th:value="${fuelType.carConfigurationPositionId}" th:text="${fuelType.name}"></option>
             </select>
           </div>
           <div class="form-group">
             <label for="chassis">Kėbulo tipas</label>
             <select id="chassis" class="form-control" th:field="*{chassisId}">
-              <option th:each="chassisType : ${chassisTypes}" th:value="${chassisType.value}" th:text="${chassisType.name}"></option>
+              <option th:each="chassisType : ${chassisTypes}" th:value="${chassisType.carConfigurationPositionId}" th:text="${chassisType.name}"></option>
             </select>
           </div>
           <div class="form-group">
@@ -115,7 +115,7 @@
           <div class="form-group">
             <label for="transmission">Transmisija</label>
             <select id="transmission" class="form-control" th:field="*{transmissionId}">
-              <option th:each="transmissionType : ${transmissionTypes}" th:value="${transmissionType.value}" th:text="${transmissionType.name}"></option>
+              <option th:each="transmissionType : ${transmissionTypes}" th:value="${transmissionType.carConfigurationPositionId}" th:text="${transmissionType.name}"></option>
             </select>
           </div>
           <div class="form-group">
@@ -125,7 +125,7 @@
           <div class="form-group">
             <label for="wheelPosition">Vairo pozicija</label>
             <select id="wheelPosition" class="form-control" th:field="*{wheelPositionId}">
-              <option th:each="wheelPosition : ${wheelPositions}" th:value="${wheelPosition.value}" th:text="${wheelPosition.name}"></option>
+              <option th:each="wheelPosition : ${wheelPositions}" th:value="${wheelPosition.carConfigurationPositionId}" th:text="${wheelPosition.name}"></option>
             </select>
           </div>
           <div class="form-group">
@@ -143,7 +143,7 @@
           <div class="form-group">
             <label for="driveType">Varantieji ratai</label>
             <select id="driveType" class="form-control" th:field="*{driveId}">
-              <option th:each="driveType : ${driveTypes}" th:value="${driveType.value}" th:text="${driveType.name}"></option>
+              <option th:each="driveType : ${driveTypes}" th:value="${driveType.carConfigurationPositionId}" th:text="${driveType.name}"></option>
             </select>
           </div>
           <div class="form-group">
@@ -203,13 +203,13 @@
           <div class="form-group">
             <label for="edit-fuelType">Kuro tipas</label>
             <select id="edit-fuelType" class="form-control" name="fuelId">
-              <option th:each="fuelType : ${fuelTypes}" th:value="${fuelType.value}" th:text="${fuelType.name}"></option>
+              <option th:each="fuelType : ${fuelTypes}" th:value="${fuelType.carConfigurationPositionId}" th:text="${fuelType.name}"></option>
             </select>
           </div>
           <div class="form-group">
             <label for="edit-chassis">Kėbulo tipas</label>
             <select id="edit-chassis" class="form-control" name="chassisId">
-              <option th:each="chassisType : ${chassisTypes}" th:value="${chassisType.value}" th:text="${chassisType.name}"></option>
+              <option th:each="chassisType : ${chassisTypes}" th:value="${chassisType.carConfigurationPositionId}" th:text="${chassisType.name}"></option>
             </select>
           </div>
           <div class="form-group">
@@ -219,7 +219,7 @@
           <div class="form-group">
             <label for="edit-transmission">Transmisija</label>
             <select id="edit-transmission" class="form-control" name="transmissionId">
-              <option th:each="transmissionType : ${transmissionTypes}" th:value="${transmissionType.value}" th:text="${transmissionType.name}"></option>
+              <option th:each="transmissionType : ${transmissionTypes}" th:value="${transmissionType.carConfigurationPositionId}" th:text="${transmissionType.name}"></option>
             </select>
           </div>
           <div class="form-group">
@@ -229,7 +229,7 @@
           <div class="form-group">
             <label for="edit-wheelPosition">Vairo pozicija</label>
             <select id="edit-wheelPosition" class="form-control" name="wheelPositionId">
-              <option th:each="wheelPosition : ${wheelPositions}" th:value="${wheelPosition.value}" th:text="${wheelPosition.name}"></option>
+              <option th:each="wheelPosition : ${wheelPositions}" th:value="${wheelPosition.carConfigurationPositionId}" th:text="${wheelPosition.name}"></option>
             </select>
           </div>
           <div class="form-group">
@@ -247,7 +247,7 @@
           <div class="form-group">
             <label for="edit-driveType">Varantieji ratai</label>
             <select id="edit-driveType" class="form-control" name="driveId">
-              <option th:each="driveType : ${driveTypes}" th:value="${driveType.value}" th:text="${driveType.name}"></option>
+              <option th:each="driveType : ${driveTypes}" th:value="${driveType.carConfigurationPositionId}" th:text="${driveType.name}"></option>
             </select>
           </div>
           <div class="form-group">

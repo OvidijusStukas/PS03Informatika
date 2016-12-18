@@ -164,7 +164,7 @@ function setupDataTable(){
 
 function loadCarModel() {
   $("#brand").change(function () {
-    $.getJSON('/inventory/getModels?brand='+$(this).val(), function(data) {
+    $.getJSON('/inventory/getModels?brand='+$("#brand").find("option:selected").attr('data'), function(data) {
       $("#model").find('option').remove();
 
       $.each(data, function (_, model) {
