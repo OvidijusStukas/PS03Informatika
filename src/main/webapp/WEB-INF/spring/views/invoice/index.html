@@ -7,7 +7,7 @@
 <body>
 <th:block th:include="fragments/header :: top-menu"/>
 
-<a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')" id="btn-generate-invoice" href="#" class="btn btn-primary">Genereuoti sąskaitas</a>
+<a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')" id="btn-generate-invoice" th:href="@{/invoices/generate}" class="btn btn-primary">Genereuoti sąskaitas</a>
 
 <table id="invoice-table" class="table">
     <thead>
@@ -22,7 +22,15 @@
         </tr>
     </thead>
     <tbody>
-
+    <tr th:each="invoice : ${invoices}">
+        <th th:text="${invoice.name}"></th>
+        <th th:text="${invoice.number}"></th>
+        <th th:text="${invoice.senderName}"></th>
+        <th th:text="${invoice.receiverName}"></th>
+        <th th:text="${invoice.totalPrice}"></th>
+        <th th:text="${invoice.generationDate}"></th>
+        <th th:text="${invoice.status}"></th>
+    </tr>
     </tbody>
 </table>
 

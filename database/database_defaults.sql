@@ -8,6 +8,9 @@ VALUES ('brand'), ('model'), ('fuelType'), ('chassisType'), ('transmissionType')
 INSERT INTO ServiceType (ServiceName)
 VALUES ('papildomas padangų komplektas'), ('pilnas kūro bakas'), ('nuplautas automobilis'), ('garso aparatūra'), ('tepalų pakeitimas'), ('dirželių keitimas');
 
+INSERT INTO InvoiceType (Name)
+VALUES ('Pardavimo sąskaita');
+
 INSERT INTO CarConfigurationPosition (CarConfigurationIndexId, Name, Value)
 VALUES
   (

@@ -3,14 +3,11 @@ package edu.informatika.semestrinis.controller;
 import edu.informatika.semestrinis.entity.CarConfigurationPositionEntity;
 import edu.informatika.semestrinis.entity.CarEntity;
 import edu.informatika.semestrinis.entity.ShopEntity;
+import edu.informatika.semestrinis.helper.AuthenticationHelper;
 import edu.informatika.semestrinis.repository.BaseRepository;
 import edu.informatika.semestrinis.repository.CarConfigurationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,12 +18,14 @@ import java.util.List;
 @RequestMapping("inventory")
 public class InventoryController {
 
+  private final AuthenticationHelper authenticationHelper;
   private final BaseRepository<CarEntity> carRepository;
   private final BaseRepository<ShopEntity> shopRepository;
   private final CarConfigurationRepository carConfigurationRepository;
 
   @Autowired
-  public InventoryController(BaseRepository<CarEntity> carRepository, BaseRepository<ShopEntity> shopRepository, CarConfigurationRepository carConfigurationRepository) {
+  public InventoryController(AuthenticationHelper authenticationHelper, BaseRepository<CarEntity> carRepository, BaseRepository<ShopEntity> shopRepository, CarConfigurationRepository carConfigurationRepository) {
+    this.authenticationHelper = authenticationHelper;
     this.carRepository = carRepository;
     this.shopRepository = shopRepository;
     this.carConfigurationRepository = carConfigurationRepository;
@@ -44,7 +43,7 @@ public class InventoryController {
     List<CarConfigurationPositionEntity> wheelPositions = carConfigurationRepository.getPositions("wheelPosition");
     List<CarConfigurationPositionEntity> driveTypes = carConfigurationRepository.getPositions("driveType");
 
-    if (hasRole("ROLE_USER")) {
+    if (authenticationHelper.hasRole("ROLE_USER")) {
       cars.removeIf(CarEntity::getIsSold);
     }
 
@@ -97,23 +96,5 @@ public class InventoryController {
     modelAndView.addObject("model", car);
 
     return modelAndView;
-  }
-
-  private boolean hasRole(String role) {
-    // get security context from thread local
-    SecurityContext context = SecurityContextHolder.getContext();
-    if (context == null)
-      return false;
-
-    Authentication authentication = context.getAuthentication();
-    if (authentication == null)
-      return false;
-
-    for (GrantedAuthority auth : authentication.getAuthorities()) {
-      if (role.equals(auth.getAuthority()))
-        return true;
-    }
-
-    return false;
   }
 }
