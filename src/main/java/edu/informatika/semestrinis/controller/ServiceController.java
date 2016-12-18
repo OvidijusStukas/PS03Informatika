@@ -55,12 +55,19 @@ public class ServiceController {
   @PreAuthorize("isAuthenticated()")
   @RequestMapping(value = "order", method = RequestMethod.POST)
   public ModelAndView order(@ModelAttribute ServiceModel serviceModel) {
-    serviceModel.getServices().stream().filter(ServiceEntity::isActive).forEach(service -> {
-      service.setType(serviceTypeRepository.getEntity(ServiceTypeEntity.class, service.getTypeId()));
-      service.setCar(carRepository.getEntity(CarEntity.class, service.getCarId()));
+    ServiceEntity serviceEntity = serviceModel.getServices().stream().filter(ServiceEntity::isActive).findFirst().orElse(null);
+    if (serviceEntity != null) {
+      CarEntity carEntity = carRepository.getEntity(CarEntity.class, serviceEntity.getCarId());
+      carEntity.setIsSold(true);
+      carRepository.updateEntity(carEntity);
 
-      serviceRepository.insertEntity(service);
-    });
+      serviceModel.getServices().stream().filter(ServiceEntity::isActive).forEach(service -> {
+        service.setType(serviceTypeRepository.getEntity(ServiceTypeEntity.class, service.getTypeId()));
+        service.setCar(carRepository.getEntity(CarEntity.class, service.getCarId()));
+
+        serviceRepository.insertEntity(service);
+      });
+    }
 
     return new ModelAndView("redirect:/inventory");
   }
