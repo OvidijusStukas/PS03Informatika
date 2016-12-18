@@ -16,12 +16,17 @@ function setupModals(){
     });
 
     $(".carEntity").dblclick(function(e){
-        var $form = $("#edit-car-form");
-        $form[0].reset();
-        $form.validate().resetForm();
+        if(window.userLevel === 1 || window.userLevel === 2)//admin / employee
+        {
+            var $form = $("#edit-car-form");
+            $form[0].reset();
+            $form.validate().resetForm();
 
-        setupEdit($(e.currentTarget));
-        $("#edit-car").modal().addClass("md-show");
+            setupEdit($(e.currentTarget));
+            $("#edit-car").modal().addClass("md-show");
+        }else{
+            $("#order-service").modal().addClass("md-show");
+        }
     })
 }
 

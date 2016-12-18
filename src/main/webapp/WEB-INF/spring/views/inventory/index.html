@@ -7,7 +7,6 @@
 <body>
 <th:block th:include="fragments/header :: top-menu"/>
 
-<a id="btn-add-new-car" class="btn btn-primary" href="#"><i class="glyphicon glyphicon-plus"></i> Sukurti naują automobilį</a>
 <a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')" id="btn-add-new-car" class="btn btn-primary" href="#"><i class="glyphicon glyphicon-plus"></i> Sukurti naują automobilį</a>
 
 <table id="car-table" class="table">
