@@ -66,7 +66,10 @@ public class InventoryController {
     carEntity.setWheelPosition(carConfigurationRepository.getEntity(CarConfigurationPositionEntity.class, carEntity.getWheelPositionId()));
     carEntity.setDrive(carConfigurationRepository.getEntity(CarConfigurationPositionEntity.class, carEntity.getDriveId()));
 
-    carRepository.insertEntity(carEntity);
+    if (carEntity.getCarId() == 0)
+      carRepository.insertEntity(carEntity);
+    else
+      carRepository.updateEntity(carEntity);
 
     return new ModelAndView("redirect:/inventory");
   }
@@ -76,24 +79,6 @@ public class InventoryController {
   @RequestMapping(value = "getModels", method = RequestMethod.GET)
   public List<CarConfigurationPositionEntity> getModels(@RequestParam String brand) {
     return carConfigurationRepository.getModelPositions(brand);
-  }
-
-  @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')")
-  @RequestMapping(value = "edit", method = RequestMethod.GET)
-  public ModelAndView edit(@RequestParam int id) {
-    CarEntity car = carRepository.getEntity(CarEntity.class, id);
-    ModelAndView modelAndView = new ModelAndView("inventory/edit");
-    modelAndView.addObject("model", car);
-
-    return modelAndView;
-  }
-
-  @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')")
-  @RequestMapping(value = "edit", method = RequestMethod.POST)
-  public ModelAndView edit(@ModelAttribute("model") CarEntity car) {
-    carRepository.updateEntity(car);
-
-    return new ModelAndView("redirect:/");
   }
 
   @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_USER')")

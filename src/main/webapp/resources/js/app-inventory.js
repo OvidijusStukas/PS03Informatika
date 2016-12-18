@@ -97,31 +97,30 @@ function setupValidation(){
     });
 }
 
+var children = {};
+
 function setupEdit(val){
 
     $("#edit-carId").val(val.data("id"));
 
-    var children = val.children();
+    children = val.children();
 
-    $('#edit-shop').find('option:eq('+val.data("shop")+')').prop('selected', true);
-    $('#edit-brand').find('option:eq('+$(children[0]).data("brand")+')').prop('selected', true);
-
-    //is pradziu uzsiloadint reikia paskui sitas:
-    $("#edit-model").find('option:eq('+$(children[1]).data("model")+')').prop('selected', true);
+    $('#edit-shop').find('option[value=\"'+val.data("shop")+'\"]').prop('selected', true);
+    $('#edit-brand').find('option[value=\"'+$(children[0]).data("brand")+'\"]').prop('selected', true).change();
 
     $("#edit-years").val($(children[2]).data("year"));
     $("#edit-price").val($(children[3]).data("price"));
     $("#edit-millage").val($(children[4]).data("distance-traveled"));
-    $("#edit-fuelType").find('option:eq('+$(children[5]).data("fuel")+')').prop('selected', true);
-    $("#edit-chassis").find('option:eq('+$(children[6]).data("chassis")+')').prop('selected', true);
+    $("#edit-fuelType").find('option[value=\"'+$(children[5]).data("fuel")+'\"]').prop('selected', true);
+    $("#edit-chassis").find('option[value=\"'+$(children[6]).data("chassis")+'\"]').prop('selected', true);
     $("#edit-workingCapacity").val($(children[7]).data("working-capacity"));
-    $("#edit-transmission").find('option:eq('+$(children[8]).data("transmission")+')').prop('selected', true);
+    $("#edit-transmission").find('option[value=\"'+$(children[8]).data("transmission")+'\"]').prop('selected', true);
     $("#edit-power").val($(children[9]).data("power"));
-    $("#edit-wheelPosition").find('option:eq('+$(children[10]).data("wheel-position")+')').prop('selected', true);
+    $("#edit-wheelPosition").find('option[value=\"'+$(children[10]).data("wheel-position")+'\"]').prop('selected', true);
     $("#edit-seatNumber").val($(children[11]).data("seat-number"));
     $("#edit-doorNumber").val($(children[12]).data("door-number"));
     $("#edit-color").val($(children[13]).data("color"));
-    $("#edit-driveType").find('option:eq('+$(children[14]).data("brand")+')').prop('selected', true);
+    $("#edit-driveType").find('option[value=\"'+$(children[14]).data("drive")+'\"]').prop('selected', true);
 
     if($(children[15]).data("is-with-defects") === true)
         $("#edit-withDefects").prop("checked",true);
@@ -134,6 +133,10 @@ function setupEdit(val){
 
     if($(children[18]).data("is-sold") === true)
         $("#edit-isSold").prop("checked",true);
+
+    //is pradziu uzsiloadint reikia paskui sitas:
+    console.log('option[value=\"'+$(children[1]).data("model")+'\"]');
+
 }
 
 function setupDataTable(){
@@ -173,4 +176,16 @@ function loadCarModel() {
       });
     });
   }).change();
+
+  $("#edit-brand").change(function () {
+    $.getJSON('/inventory/getModels?brand='+$("#edit-brand").find("option:selected").attr('data'), function(data) {
+      $("#edit-model").find('option').remove();
+
+      $.each(data, function (_, model) {
+        $("#edit-model").append($("<option>", {value: model.carConfigurationPositionId, text: model.name}));
+      });
+
+      $("#edit-model").find('option[value=\"'+$(children[1]).data("model")+'\"]').prop('selected', true);
+    });
+  });
 }

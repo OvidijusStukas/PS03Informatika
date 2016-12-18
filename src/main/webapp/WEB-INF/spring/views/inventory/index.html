@@ -34,21 +34,21 @@
   </thead>
   <tbody>
   <tr class="carEntity" th:data-id="${car.getCarId()}" th:data-shop="${car.getShopId()}" th:each="car : ${cars}">
-    <th th:data-brand="${car.getBrand().getValue()}" th:text="${car.getBrand().getName()}"></th>
-    <th th:data-model="${car.getModel().getValue()}" th:text="${car.getModel().getName()}"></th>
+    <th th:data-brand="${car.getBrand().carConfigurationPositionId}" th:text="${car.getBrand().getName()}"></th>
+    <th th:data-model="${car.getModel().carConfigurationPositionId}" th:text="${car.getModel().getName()}"></th>
     <th th:data-year="${car.getYear()}" th:text="${car.getYear()}"></th>
     <th th:data-price="${car.getPrice()}" th:text="${car.getPrice()}"></th>
     <th th:data-distance-traveled="${car.getDistanceTraveled()}" th:text="${car.getDistanceTraveled()}"></th>
-    <th th:data-fuel="${car.getFuel().getValue()}" th:text="${car.getFuel().getName()}"></th>
-    <th th:data-chassis="${car.getChassis().getValue()}" th:text="${car.getChassis().getName()}"></th>
+    <th th:data-fuel="${car.getFuel().carConfigurationPositionId}" th:text="${car.getFuel().getName()}"></th>
+    <th th:data-chassis="${car.getChassis().carConfigurationPositionId}" th:text="${car.getChassis().getName()}"></th>
     <th th:data-working-capacity="${car.getWorkingCapacity()}" th:text="${car.getWorkingCapacity()}"></th>
-    <th th:data-transmission="${car.getTransmission().getValue()}" th:text="${car.getTransmission().getName()}"></th>
+    <th th:data-transmission="${car.getTransmission().carConfigurationPositionId}" th:text="${car.getTransmission().getName()}"></th>
     <th th:data-power="${car.getPower()}" th:text="${car.getPower()}"></th>
-    <th th:data-wheel-position="${car.getWheelPosition().getValue()}" th:text="${car.getWheelPosition().getName()}"></th>
+    <th th:data-wheel-position="${car.getWheelPosition().carConfigurationPositionId}" th:text="${car.getWheelPosition().getName()}"></th>
     <th th:data-seat-number="${car.getSeatNumber()}" th:text="${car.getSeatNumber()}"></th>
     <th th:data-door-number="${car.getDoorNumber()}" th:text="${car.getDoorNumber()}"></th>
     <th th:data-color="${car.getColor()}" th:text="${car.getColor()}"></th>
-    <th th:data-drive="${car.getDrive().getValue()}" th:text="${car.getDrive().getName()}"></th>
+    <th th:data-drive="${car.getDrive().carConfigurationPositionId}" th:text="${car.getDrive().getName()}"></th>
     <th th:data-is-with-defects="${car.isWithDefects()}" th:text="${car.isWithDefects() ? 'taip' : 'ne'}"></th>
     <th th:data-is-central-lock="${car.isCentralLock()}" th:text="${car.isCentralLock() ? 'taip' : 'ne'}"></th>
     <th th:data-is-air-bags="${car.isAirBags()}" th:text="${car.isAirBags() ? 'taip' : 'ne'}"></th>
@@ -180,7 +180,7 @@
         <h4 class="modal-title">Redaguoti automobilį</h4>
       </div>
       <div class="modal-body">
-        <form id="edit-car-form" class="form-signin" th:action="@{/inventory/edit}" method="POST">
+        <form id="edit-car-form" class="form-signin" th:action="@{/inventory/add}" method="POST">
           <input id="edit-carId" type="hidden" name="carId">
           <div class="form-group">
             <label>Parduotuvė</label>
@@ -191,7 +191,7 @@
           <div class="form-group">
             <label for="edit-brand">Markė</label>
             <select id="edit-brand" class="form-control" name="brandId">
-              <option th:each="brand : ${brands}" th:value="${brand.value}" th:text="${brand.name}"></option>
+              <option th:each="brand : ${brands}" th:data="${brand.value}" th:value="${brand.carConfigurationPositionId}" th:text="${brand.name}"></option>
             </select>
           </div>
           <div class="form-group">
@@ -280,7 +280,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Uždaryti</button>
-            <button type="submit" class="btn btn-primary">Pridėti</button>
+            <button type="submit" class="btn btn-primary">Keisti</button>
           </div>
         </form>
       </div>
