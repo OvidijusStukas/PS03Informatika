@@ -42,10 +42,6 @@ public class ParticipantEntity implements Serializable {
   @Fetch(FetchMode.SELECT)
   private List<MessageEntity> messages;
 
-  public ParticipantEntity() {
-    this.chatGroup = new ArrayList<>();
-  }
-
   public int getParticipantId() {
     return participantId;
   }

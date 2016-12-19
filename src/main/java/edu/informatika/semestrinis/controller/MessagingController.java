@@ -143,18 +143,15 @@ public class MessagingController {
     @RequestMapping(value = {"sendMessage"}, method = RequestMethod.GET)
     public ModelAndView sendMessage(@RequestParam int chatGroupId, @RequestParam String message) {
 
-        //prie chat groupse pagal id sukuria message su textu message
+        ParticipantEntity participantEntity = participantRepository.getByUserId(authenticationHelper.getCurrentUserId());
+
+        MessageEntity messageEntity = new MessageEntity();
+        messageEntity.setText(message);
+        messageEntity.setParticipant(participantEntity);
+        messageEntity.setSendDate(new Date());
+
+        messageRepository.insertEntity(messageEntity);
 
         return new ModelAndView("redirect:/messages");
     }
-
-    @PreAuthorize("isAuthenticated()")
-    @RequestMapping(value = {"getChatGroupMessages"}, method = RequestMethod.GET)
-    public ModelAndView sendMessage(@RequestParam int chatGroupId) {
-
-        //pagal chatGroupId grazina visus message
-
-        return new ModelAndView("redirect:/messages");
-    }
-
 }
