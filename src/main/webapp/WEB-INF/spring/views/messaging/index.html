@@ -20,19 +20,12 @@
         </tr>
     </thead>
     <tbody>
-    <tr data-id="1" class="group-chat">
-        <td>Test</td>
-        <td>2016-05-12</td>
-        <td>2016-12-19</td>
-        <td>true</td>
-        <td><a sec:authorize="hasRole('ROLE_EMPLOYEE')" class="admin-chat-group" th:data-chat-id="1" href="#">Administruoti pokalbį</a></td>
-    </tr>
-    <tr data-id="2" class="group-chat">
-        <td>Test2</td>
-        <td>2016-05-12</td>
-        <td>2016-12-19</td>
-        <td>true</td>
-        <td><a sec:authorize="hasRole('ROLE_EMPLOYEE')" class="admin-chat-group" th:data-chat-id="2" href="#">Administruoti pokalbį</a></td>
+    <tr th:data-id="${group.getChatGroupId()}" class="group-chat" th:each="group :${groups}">
+        <td th:text="${group.getName()}"></td>
+        <td th:text="${group.getCreationDate()}"></td>
+        <td th:text="${group.getLastMessageDate()}"></td>
+        <td th:text="${group.isActive()}"></td>
+        <td><a sec:authorize="hasRole('ROLE_EMPLOYEE')" class="admin-chat-group" th:data-id="${group.getChatGroupId()}" href="#">Administruoti pokalbį</a></td>
     </tr>
     </tbody>
 </table>
@@ -83,7 +76,7 @@
                 <button id="close-chat-participant-modal-button" type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title">Pridėti pokalbio dalyvį:</h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body clearfix">
                 <form th:action="@{messages/showChatGroupHistory}" method="get">
                     <div class="form-group">
                         <input id="participantAddChatGroupId" name="chatGroupId" type="hidden">
