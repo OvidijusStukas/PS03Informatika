@@ -1,5 +1,6 @@
 package edu.informatika.semestrinis.helper;
 
+import edu.informatika.semestrinis.entity.UserEntity;
 import edu.informatika.semestrinis.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -47,5 +48,18 @@ public class AuthenticationHelper {
       return 0;
 
     return userRepository.getUserId(authentication.getName());
+  }
+
+  public UserEntity getCurrentUser() {
+    // get security context from thread local
+    SecurityContext context = SecurityContextHolder.getContext();
+    if (context == null)
+      return null;
+
+    Authentication authentication = context.getAuthentication();
+    if (authentication == null)
+      return null;
+
+    return userRepository.getUser(authentication.getName());
   }
 }

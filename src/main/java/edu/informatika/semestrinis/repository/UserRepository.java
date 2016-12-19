@@ -20,4 +20,15 @@ public class UserRepository extends BaseRepository<UserEntity> {
 
     return ((List<UserEntity>) list).get(0).getUserId();
   }
+
+  public UserEntity getUser(String username) {
+    Criteria c = hibernateTemplate.getSessionFactory().getCurrentSession()
+      .createCriteria(UserEntity.class, "user")
+      .add(Restrictions.eq("user.userName", username));
+
+
+    List list = c.list();
+
+    return ((List<UserEntity>) list).get(0);
+  }
 }

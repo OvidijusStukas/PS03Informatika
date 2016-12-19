@@ -3,6 +3,7 @@ package edu.informatika.semestrinis.controller;
 import edu.informatika.semestrinis.entity.CarEntity;
 import edu.informatika.semestrinis.entity.ServiceEntity;
 import edu.informatika.semestrinis.entity.ServiceTypeEntity;
+import edu.informatika.semestrinis.helper.AuthenticationHelper;
 import edu.informatika.semestrinis.model.ServiceModel;
 import edu.informatika.semestrinis.repository.BaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +24,14 @@ import java.util.concurrent.ThreadLocalRandom;
 @RequestMapping(value = "service")
 public class ServiceController {
 
+  private final AuthenticationHelper authenticationHelper;
   private final BaseRepository<CarEntity> carRepository;
   private final BaseRepository<ServiceEntity> serviceRepository;
   private final BaseRepository<ServiceTypeEntity> serviceTypeRepository;
 
   @Autowired
-  public ServiceController(BaseRepository<CarEntity> carRepository, BaseRepository<ServiceEntity> serviceRepository, BaseRepository<ServiceTypeEntity> serviceTypeRepository) {
+  public ServiceController(AuthenticationHelper authenticationHelper, BaseRepository<CarEntity> carRepository, BaseRepository<ServiceEntity> serviceRepository, BaseRepository<ServiceTypeEntity> serviceTypeRepository) {
+    this.authenticationHelper = authenticationHelper;
     this.carRepository = carRepository;
     this.serviceRepository = serviceRepository;
     this.serviceTypeRepository = serviceTypeRepository;
@@ -59,6 +62,7 @@ public class ServiceController {
     if (serviceEntity != null) {
       CarEntity carEntity = carRepository.getEntity(CarEntity.class, serviceEntity.getCarId());
       carEntity.setIsSold(true);
+      carEntity.setUser(authenticationHelper.getCurrentUser());
       carRepository.updateEntity(carEntity);
 
       serviceModel.getServices().stream().filter(ServiceEntity::isActive).forEach(service -> {
