@@ -40,7 +40,11 @@ function setupEditModal(target){
     $("#edit-sender-name").val($(children[2]).data("sendername"));
     $("#edit-receiver-name").val($(children[3]).data("receivername"));
     $("#edit-total-price").val($(children[4]).data("totalprice"));
-    $("#edit-generation-date").val($(children[5]).data("generationdate"));
+
+    var dateTime = $(children[5]).data("generationdate");
+    var dateValue = dateTime.indexOf(' ') > 0 ? dateTime.substr(0, dateTime.indexOf(' ')) : dateTime;
+
+    $("#edit-generation-date").val(dateValue);
     $("#edit-status").val($(children[6]).data("status"));
 
 }

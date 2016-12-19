@@ -7,7 +7,7 @@
 <body>
 <th:block th:include="fragments/header :: top-menu"/>
 
-<a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')" id="btn-generate-invoice" th:href="@{/invoices/generate}" class="btn btn-primary">Genereuoti sąskaitas</a>
+<a sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')" id="btn-generate-invoice" th:href="@{/invoices/generate}" class="btn btn-primary">Generuoti sąskaitas</a>
 
 <input id="date-from" type="text">
 <input id="date-to" type="text">
@@ -45,7 +45,7 @@
                 <h4 class="modal-title">Redaguoti sąskaita:</h4>
             </div>
             <div class="modal-body">
-                <form id="invoice-edit" class="form-signin">
+                <form id="invoice-edit" class="form-signin" th:action="@{/invoices/edit}" method="POST">
                     <input id="edit-invoice-id" type="hidden" name="invoiceId">
 
                     <div class="form-group">
@@ -82,7 +82,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Uždaryti</button>
-                        <button type="submit" class="btn btn-primary">Pridėti</button>
+                        <button type="submit" class="btn btn-primary">Keisti</button>
                     </div>
                 </form>
             </div>

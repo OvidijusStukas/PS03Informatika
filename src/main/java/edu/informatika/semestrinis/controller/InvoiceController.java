@@ -1,11 +1,15 @@
 package edu.informatika.semestrinis.controller;
 
+import edu.informatika.semestrinis.entity.CarEntity;
 import edu.informatika.semestrinis.entity.InvoiceEntity;
+import edu.informatika.semestrinis.entity.InvoiceTypeEntity;
 import edu.informatika.semestrinis.helper.AuthenticationHelper;
+import edu.informatika.semestrinis.repository.BaseRepository;
 import edu.informatika.semestrinis.repository.InvoiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
@@ -16,13 +20,17 @@ import java.util.List;
 @RequestMapping("invoices")
 public class InvoiceController {
 
-    private final AuthenticationHelper authenticationHelper;
     private final InvoiceRepository invoiceRepository;
+    private final BaseRepository<CarEntity> carRepository;
+    private final AuthenticationHelper authenticationHelper;
+    private final BaseRepository<InvoiceTypeEntity> invoiceTypeRepository;
 
     @Autowired
-    public InvoiceController(InvoiceRepository invoiceRepository, AuthenticationHelper authenticationHelper) {
+    public InvoiceController(InvoiceRepository invoiceRepository, AuthenticationHelper authenticationHelper, BaseRepository<CarEntity> carRepository, BaseRepository<InvoiceTypeEntity> invoiceTypeRepository) {
         this.invoiceRepository = invoiceRepository;
         this.authenticationHelper = authenticationHelper;
+        this.carRepository = carRepository;
+        this.invoiceTypeRepository = invoiceTypeRepository;
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -43,6 +51,16 @@ public class InvoiceController {
     @RequestMapping(value = "generate", method = RequestMethod.GET)
     public ModelAndView generate() {
         invoiceRepository.generateInvoices();
+
+        return new ModelAndView("redirect:/invoices");
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')")
+    @RequestMapping(value = "edit", method = RequestMethod.POST)
+    public ModelAndView edit(@ModelAttribute InvoiceEntity invoiceEntity) {
+        invoiceEntity.setCar(carRepository.getEntity(CarEntity.class, invoiceEntity.getCarId()));
+        invoiceEntity.setType(invoiceTypeRepository.getEntity(InvoiceTypeEntity.class, invoiceEntity.getTypeId()));
+        invoiceRepository.updateEntity(invoiceEntity);
 
         return new ModelAndView("redirect:/invoices");
     }

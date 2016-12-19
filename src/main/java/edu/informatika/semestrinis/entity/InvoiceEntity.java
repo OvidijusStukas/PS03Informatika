@@ -1,5 +1,7 @@
 package edu.informatika.semestrinis.entity;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -44,6 +46,7 @@ public class InvoiceEntity implements Serializable {
   private double totalPrice;
 
   @Column(name = "GenerationDate")
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
   private Date generationDate;
 
   @Column(name = "Status")
