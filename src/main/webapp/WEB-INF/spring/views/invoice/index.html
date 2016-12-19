@@ -22,14 +22,14 @@
         </tr>
     </thead>
     <tbody>
-    <tr th:data-id="${invoice.invoiceId}" th:each="invoice : ${invoices}">
-        <th th:text="${invoice.name}"></th>
-        <th th:text="${invoice.number}"></th>
-        <th th:text="${invoice.senderName}"></th>
-        <th th:text="${invoice.receiverName}"></th>
-        <th th:text="${invoice.totalPrice}"></th>
-        <th th:text="${invoice.generationDate}"></th>
-        <th th:text="${invoice.status}"></th>
+    <tr class="invoiceEntity" th:data-id="${invoice.invoiceId}" th:data-car-id="${invoice.getCar().getCarId()}" th:data-type-id="${invoice.getType().getInvoiceTypeId()}" th:each="invoice : ${invoices}">
+        <th th:data-name="${invoice.name}" th:text="${invoice.name}"></th>
+        <th th:data-number="${invoice.number}" th:text="${invoice.number}"></th>
+        <th th:data-senderName="${invoice.senderName}" th:text="${invoice.senderName}"></th>
+        <th th:data-receiverName="${invoice.receiverName}" th:text="${invoice.receiverName}"></th>
+        <th th:data-totalPrice="${invoice.totalPrice}" th:text="${invoice.totalPrice}"></th>
+        <th th:data-generationDate="${invoice.generationDate}" th:text="${invoice.generationDate}"></th>
+        <th th:data-status="${invoice.status}" th:text="${invoice.status}"></th>
     </tr>
     </tbody>
 </table>
@@ -42,34 +42,40 @@
                 <h4 class="modal-title">Redaguoti sąskaita:</h4>
             </div>
             <div class="modal-body">
-                <form id="invoice-edit" class="form-signin" th:object="">
+                <form id="invoice-edit" class="form-signin">
+                    <input id="edit-invoice-id" type="hidden" name="invoiceId">
+
                     <div class="form-group">
-                        <label>Šalis</label>
-                        <input class="form-control" th:field="*{country}" type="text" placeholder="Šalis"/>
+                        <label>Pavadinimas</label>
+                        <input id="edit-name" class="form-control" name="name" type="text" placeholder="Pavadinimas"/>
                     </div>
                     <div class="form-group">
-                        <label>Šalis</label>
-                        <input class="form-control" th:field="*{country}" type="text" placeholder="Šalis"/>
+                        <label>Numeris</label>
+                        <input id="edit-number" class="form-control" name="number" type="text" placeholder="Numeris"/>
+                    </div>
+
+                    <input id="edit-car-id" type="hidden" name="carId">
+                    <input id="edit-type-id" type="hidden" name="typeId">
+
+                    <div class="form-group">
+                        <label>Siuntėjas</label>
+                        <input id="edit-sender-name" class="form-control" name="senderName" type="text" placeholder="Siuntėjas"/>
                     </div>
                     <div class="form-group">
-                        <label>Šalis</label>
-                        <input class="form-control" th:field="*{country}" type="text" placeholder="Šalis"/>
+                        <label>Gavėjas</label>
+                        <input id="edit-receiver-name" class="form-control" name="receiverName" type="text" placeholder="Gavėjas"/>
                     </div>
                     <div class="form-group">
-                        <label>Šalis</label>
-                        <input class="form-control" th:field="*{country}" type="text" placeholder="Šalis"/>
+                        <label>Suma</label>
+                        <input id="edit-total-price" class="form-control" name="totalPrice" type="text" placeholder="Suma"/>
                     </div>
                     <div class="form-group">
-                        <label>Šalis</label>
-                        <input class="form-control" th:field="*{country}" type="text" placeholder="Šalis"/>
+                        <label>Generavimo data</label>
+                        <input id="edit-generation-date" class="form-control" name="generationDate" type="text" placeholder="Generavimo data"/>
                     </div>
                     <div class="form-group">
-                        <label>Šalis</label>
-                        <input class="form-control" th:field="*{country}" type="text" placeholder="Šalis"/>
-                    </div>
-                    <div class="form-group">
-                        <label>Šalis</label>
-                        <input class="form-control" th:field="*{country}" type="text" placeholder="Šalis"/>
+                        <label>Statusas</label>
+                        <input id="edit-status" class="form-control" name="status" type="text" placeholder="Statusas"/>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Uždaryti</button>

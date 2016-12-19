@@ -18,9 +18,15 @@ public class InvoiceEntity implements Serializable {
   @JoinColumn(name = "InvoiceTypeId")
   private InvoiceTypeEntity type;
 
+  @Transient
+  private int typeId;
+
   @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "CarId")
   private CarEntity car;
+
+  @Transient
+  private int carId;
 
   @Column(name = "Name")
   private String name;
@@ -121,5 +127,21 @@ public class InvoiceEntity implements Serializable {
 
   public void setStatus(String status) {
     this.status = status;
+  }
+
+  public int getCarId() {
+    return carId;
+  }
+
+  public void setCarId(int carId) {
+    this.carId = carId;
+  }
+
+  public int getTypeId() {
+    return typeId;
+  }
+
+  public void setTypeId(int typeId) {
+    this.typeId = typeId;
   }
 }
