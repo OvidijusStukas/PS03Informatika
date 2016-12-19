@@ -6,14 +6,12 @@ import edu.informatika.semestrinis.entity.ParticipantEntity;
 import edu.informatika.semestrinis.entity.UserEntity;
 import edu.informatika.semestrinis.helper.AuthenticationHelper;
 import edu.informatika.semestrinis.repository.BaseRepository;
+import edu.informatika.semestrinis.repository.ParticipantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Date;
@@ -25,13 +23,15 @@ public class MessagingController {
 
     private final AuthenticationHelper authenticationHelper;
     private final BaseRepository<UserEntity> userRepository;
+    private final BaseRepository<MessageEntity> messageRepository;
     private final BaseRepository<ChatGroupEntity> chatGroupRepository;
-    private final BaseRepository<ParticipantEntity> participantRepository;
+    private final ParticipantRepository participantRepository;
 
     @Autowired
-    public MessagingController(AuthenticationHelper authenticationHelper, BaseRepository<UserEntity> userRepository, BaseRepository<ChatGroupEntity> chatGroupRepository, BaseRepository<ParticipantEntity> participantRepository) {
+    public MessagingController(AuthenticationHelper authenticationHelper, BaseRepository<UserEntity> userRepository, BaseRepository<MessageEntity> messageRepository, BaseRepository<ChatGroupEntity> chatGroupRepository, ParticipantRepository participantRepository) {
         this.authenticationHelper = authenticationHelper;
         this.userRepository = userRepository;
+        this.messageRepository = messageRepository;
         this.chatGroupRepository = chatGroupRepository;
         this.participantRepository = participantRepository;
     }
@@ -74,11 +74,13 @@ public class MessagingController {
 
             int participantId = participantRepository.insertEntity(participant);
 
-            if (user == currentUser) {
+            if (user.getUserId() == currentUser.getUserId()) {
                 MessageEntity message = new MessageEntity();
                 message.setParticipant(participantRepository.getEntity(ParticipantEntity.class, participantId));
-                message.setSentDate(new Date());
+                message.setSendDate(new Date());
                 message.setText(chatMessage);
+
+                messageRepository.insertEntity(message);
 
                 updatedChatGroup.setLastMessageDate(new Date());
             }
@@ -110,20 +112,20 @@ public class MessagingController {
         return new ModelAndView("redirect:/messages");
     }
 
+    @ResponseBody
     @PreAuthorize("isAuthenticated()")
-    @RequestMapping(value = {"showChatGroupHistory"}, method = RequestMethod.POST)
-    public ModelAndView showChatGroupHistory(@RequestBody MultiValueMap<String,String> formData){
-
-        //suranda chat groupa pagal id ir gražina visas message
-
-        return new ModelAndView("redirect:/messages");
+    @RequestMapping(value = {"showChatGroupHistory"}, method = RequestMethod.GET)
+    public ChatGroupEntity showChatGroupHistory(@RequestParam int chatGroupId) {
+        return chatGroupRepository.getEntity(ChatGroupEntity.class , chatGroupId);
     }
 
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = {"addChatParticipant"}, method = RequestMethod.GET)
-    public ModelAndView showChatGroupHistory(@RequestParam int chatGroupId, @RequestParam int userId){
+    public ModelAndView addChatGroupHistory(@RequestParam int chatGroupId, @RequestParam int userId){
+        ChatGroupEntity chatGroupEntity = chatGroupRepository.getEntity(ChatGroupEntity.class, chatGroupId);
+        chatGroupEntity.getParticipants().add(participantRepository.getByUserId(userId));
 
-        //suranda chat group pagal id ir prikabina participanta su tokiu useriu
+        chatGroupRepository.updateEntity(chatGroupEntity);
 
         return new ModelAndView("redirect:/messages");
     }

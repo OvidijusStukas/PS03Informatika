@@ -1,5 +1,8 @@
 package edu.informatika.semestrinis.entity;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -34,6 +37,10 @@ public class ParticipantEntity implements Serializable {
 
   @Column(name = "Email")
   private String email;
+
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "participant")
+  @Fetch(FetchMode.SELECT)
+  private List<MessageEntity> messages;
 
   public ParticipantEntity() {
     this.chatGroup = new ArrayList<>();
@@ -93,5 +100,13 @@ public class ParticipantEntity implements Serializable {
 
   public void setEmail(String email) {
     this.email = email;
+  }
+
+  public List<MessageEntity> getMessages() {
+    return messages;
+  }
+
+  public void setMessages(List<MessageEntity> messages) {
+    this.messages = messages;
   }
 }

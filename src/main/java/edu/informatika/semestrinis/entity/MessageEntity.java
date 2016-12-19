@@ -1,11 +1,14 @@
 package edu.informatika.semestrinis.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
 @Table(name = "Message")
-public class MessageEntity {
+public class MessageEntity implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Id
@@ -13,15 +16,16 @@ public class MessageEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int messageId;
 
-  @OneToOne(fetch = FetchType.EAGER)
+  @JsonIgnore
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "ParticipantId")
   private ParticipantEntity participant;
 
   @Column(name = "Text")
   private String text;
 
-  @Column(name = "SentDate")
-  private Date sentDate;
+  @Column(name = "SendDate")
+  private Date sendDate;
 
   @Column(name = "IsDeleted")
   private boolean isDeleted;
@@ -50,12 +54,12 @@ public class MessageEntity {
     this.text = text;
   }
 
-  public Date getSentDate() {
-    return sentDate;
+  public Date getSendDate() {
+    return sendDate;
   }
 
-  public void setSentDate(Date sentDate) {
-    this.sentDate = sentDate;
+  public void setSendDate(Date sendDate) {
+    this.sendDate = sendDate;
   }
 
   public boolean isDeleted() {

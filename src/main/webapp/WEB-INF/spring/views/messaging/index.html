@@ -121,7 +121,7 @@
                 <h4 class="modal-title">Pokalbio administravimas</h4>
             </div>
             <div class="modal-body clearfix">
-                <form th:action="@{messages/showChatGroupHistory}" method="POST">
+                <form th:action="@{messages/showChatGroupHistory}" method="GET">
                     <input class="chatGroupIdHidden" name="chatGroupId" type="hidden">
                     <button type="submit" id="show-chat-history" class="btn btn-primary col-xs-12" style="margin-top:10px;">Pamatyti pokalbio istorija</button>
                 </form>

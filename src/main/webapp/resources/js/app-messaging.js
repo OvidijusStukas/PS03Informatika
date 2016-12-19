@@ -38,6 +38,7 @@ function setupButtons(){
 
     $(".admin-chat-group").click(function(e){
         var target = $(e.currentTarget);
+        $(".chatGroupIdHidden").parent().
         $(".chatGroupIdHidden").val(target.data("chat-id"));
         $("#admin-chat-group-id").val(target.data("chat-id"));
         $("#chat-admin-modal").modal().addClass("md-show");
