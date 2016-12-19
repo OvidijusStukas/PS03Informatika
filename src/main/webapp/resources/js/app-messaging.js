@@ -5,33 +5,55 @@ $(document).ready(function(){
 });
 
 function setupButtons(){
+
     $("#start-new-chat-group-btn").click(function(){
-        //create chat group
-        var $form = $("#create-chat");
-        $form[0].reset();
-        $form.validate().resetForm();
-        $("#create-chat-modal").modal().addClass("md-show");
-    });
+        $("#new-group-chat").modal().addClass("md-show");
+    })
 
     $(".group-chat").dblclick(function(){
-        //open chat modal
-        $("#chat-name").innerHTML = "TEST";
         $("#group-chat").modal().addClass("md-show");
     });
+
+    $("#show-chat-participants-btn").click(function(){
+        $("#chat-participant-modal").modal().addClass("md-show");
+    });
+
+    $("#close-chat-participant-modal-button").click(function(){
+        $("#chat-participant-modal").modal("hide");
+    });
+
+    $("#show-chat-email-config-btn").click(function(){
+        $("#chat-email-config-modal").modal().addClass("md-show");
+    })
+
+    $("#close-chat-email-config-modal-button").click(function(){
+        $("#chat-email-config-modal").modal("hide");
+    });
+
+    $(".admin-chat-group").click(function(e){
+        var target = $(e.currentTarget);
+
+        $("#admin-chat-group-id").val(target.data("chat-id"));
+        $("#chat-admin-modal").modal().addClass("md-show");
+
+    });
+
+    $("#show-chat-history").click(function (){
+        alert("show chat history for chat" + $("#admin-chat-group-id").val());
+    })
+
+    $("#chat-group-delete").click(function (){
+        alert("delete for chat" + $("#admin-chat-group-id").val());
+    })
+
+    $("#chat-group-diactyvate").click(function(){
+        alert("diactivate chat" + $("#admin-chat-group-id").val());
+    })
 }
 
 function setupValidation(){
 
-    $("#create-chat").validate({
-        rules: {
-            name: "required",
-            firstParticipant: "required"
-        },
-        messages:{
-            name: "Laukas privalomas",
-            firstParticipant: "Laukas privalomas"
-        }
-    });
+
 }
 
 function setupDataTable(){

@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org/">
+      xmlns:th="http://www.thymeleaf.org/"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:replace="fragments/header :: head">
 </head>
 <body>
 <th:block th:include="fragments/header :: top-menu"/>
 
-<a id="start-new-chat-group-btn" class="btn btn-primary" href="#"><i class="glyphicon glyphicon-plus"></i> Padėti naują pokalbį</a>
+<a id="start-new-chat-group-btn" class="btn btn-primary" href="#"><i class="glyphicon glyphicon-send"></i> Pradėti naują pokalbį</a>
 
 <table id="chat-groups-table">
     <thead>
@@ -15,6 +16,7 @@
             <td>Sukurimo data</td>
             <td>paskutinės žinutės data</td>
             <td>Aktyvus</td>
+            <td sec:authorize="hasRole('ROLE_EMPLOYEE')">Veiksmai</td>
         </tr>
     </thead>
     <tbody>
@@ -23,12 +25,14 @@
         <td>2016-05-12</td>
         <td>2016-12-19</td>
         <td>true</td>
+        <td><a sec:authorize="hasRole('ROLE_EMPLOYEE')"><a class="admin-chat-group" th:data-chat-id="1" href="#">Administruoti pokalbį</a></td>
     </tr>
     <tr data-id="2" class="group-chat">
         <td>Test2</td>
         <td>2016-05-12</td>
         <td>2016-12-19</td>
         <td>true</td>
+        <td><a sec:authorize="hasRole('ROLE_EMPLOYEE')"><a class="admin-chat-group" th:data-chat-id="2" href="#">Administruoti pokalbį</a></td>
     </tr>
     </tbody>
 </table>
@@ -38,7 +42,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Pokalbis: <span id="chat-name"></span></h4>
+                <a id="show-chat-participants-btn" href="#" class="pull-left" style="margin-right: 10px;"><i class="glyphicon glyphicon-plus"></i> Pridėti dalyvį</a></h4>
+                <a id="show-chat-email-config-btn" href="#" class="pull-left" style="margin-left: 10px;"><i class="glyphicon glyphicon-envelope"></i> Pašto pranešimai</a></h4>
             </div>
             <div class="modal-body clearfix">
                 <div id="chat-container" class="col-xs-12 clearfix">
@@ -47,36 +52,68 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <textarea rows="4" cols="50" class="col-xs-12"></textarea>
+                <textarea id="chat-message" rows="4" cols="50" class="col-xs-12"></textarea>
                 <a id="chat-submit" class="btn btn-primary">Siūsti</a>
             </div>
         </div>
     </div>
 </div>
 
-<div id="create-chat-modal" class="modal fade" tabindex="-1" role="dialog">
+<div id="new-group-chat" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Pokalbio sukūrimas</h4>
+                <h4>Parašykite žinutę</h4>
+            </div>
+            <div class="modal-footer">
+                <form th:action="@{messages/createNewChat}">
+                    <textarea name="chatMessage" id="new-chat-message" rows="4" cols="50" class="col-xs-12"></textarea>
+                    <button type="submit" id="new-chat-submit" class="btn btn-primary">Siūsti</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="chat-participant-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button id="close-chat-participant-modal-button" type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Visi pokalbio dalyviai:</h4>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="chat-email-config-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button id="close-chat-email-config-modal-button" type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">El pašto priminimai:</h4>
+            </div>
+            <div class="modal-body">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="chat-admin-modal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Pokalbio administravimas</h4>
             </div>
             <div class="modal-body clearfix">
-                <form id="create-chat">
-                    <div class="form-group">
-                        <label for="name">Pokalbio pavadinimas</label>
-                        <input id="name" class="form-control" name="name" type="text" placeholder="Pokalbio pavadinimas"/>
-                    </div>
-                    <div class="form-group">
-                        <label for="firstParticipant">Pasirinkite vartotoją</label>
-                        <select id="firstParticipant" class="form-control" name="firstParticipant">
-                            <option th:each="user : ${users}" th:value="${user.getUserId()}" th:text="${user.getName()}"></option>
-                        </select>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" id="create-chat-submit" class="btn btn-primary">Siūsti</button>
-                    </div>
-                </form>
+                <a id="show-chat-history" href="#" class="btn btn-primary col-xs-12" style="margin-top:10px;">Pamatyti pokalbio istorija</a>
+                <a id="chat-group-delete" href="#" class="btn btn-primary col-xs-12" style="margin-top:10px;">Trinti pokalbi</a>
+                <a id="chat-group-diactyvate" href="#" class="btn btn-primary col-xs-12" style="margin-top:10px;">Deaktivuoti pokalbį</a>
+                <input id="admin-chat-group-id" name="chatGroupId" type="hidden">
             </div>
         </div>
     </div>
