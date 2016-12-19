@@ -2,6 +2,7 @@ package edu.informatika.semestrinis.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "Service")
@@ -35,6 +36,9 @@ public class ServiceEntity implements Serializable {
 
   @Column(name = "IsActive")
   private boolean isActive;
+
+  @OneToMany(fetch = FetchType.EAGER, mappedBy = "service")
+  private List<ServiceRatingEntity> ratings;
 
   public int getServiceId() {
     return serviceId;
@@ -98,5 +102,13 @@ public class ServiceEntity implements Serializable {
 
   public void setActive(boolean active) {
     isActive = active;
+  }
+
+  public List<ServiceRatingEntity> getRatings() {
+    return ratings;
+  }
+
+  public void setRatings(List<ServiceRatingEntity> ratings) {
+    this.ratings = ratings;
   }
 }

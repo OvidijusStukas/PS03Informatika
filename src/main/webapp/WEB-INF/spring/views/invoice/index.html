@@ -45,7 +45,7 @@
     </tbody>
 </table>
 
-<div id="invoice-edit-modal" class="modal fade" tabindex="-1" role="dialog">
+<div sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')" id="invoice-edit-modal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -106,33 +106,14 @@
                 <h4 class="modal-title">Paslagų įvertinimas</h4>
             </div>
             <div class="modal-body">
-                <form id="service-rating">
-                    <div class="form-group">
-                        <label id="service-name">Paslaugos vardas</label></br>
-                        <label>Komentaras: </label>
-                        <input id="service-comment" name="service-comment" type="text" class="form-control">
-                        <label>vertinimas: </label>
-                        <input id="service-score" name="service-score" type="text" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label id="service-name">Paslaugos vardas</label></br>
-                        <label>Komentaras: </label>
-                        <input id="service-comment" name="service-comment" type="text" class="form-control">
-                        <label>vertinimas: </label>
-                        <input id="service-score" name="service-score" type="text" class="form-control">
-                    </div>
-                    <div class="form-group">
-                        <label id="service-name">Paslaugos vardas</label></br>
-                        <label>Komentaras: </label>
-                        <input id="service-comment" name="service-comment" type="text" class="form-control">
-                        <label>vertinimas: </label>
-                        <input id="service-score" name="service-score" type="text" class="form-control">
+                <form id="service-rating" th:action="@{/service/rate}" method="POST">
+                    <span id="insertTarget"></span>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Atšaukti</button>
+                        <button type="submit" class="btn btn-primary">Vertinti</button>
                     </div>
                 </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Atšaukti</button>
-                <button type="button" class="btn btn-primary">Vertinti</button>
             </div>
         </div>
     </div>

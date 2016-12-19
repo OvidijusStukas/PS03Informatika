@@ -1,5 +1,9 @@
 package edu.informatika.semestrinis.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
@@ -14,7 +18,8 @@ public class ServiceRatingEntity implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int serviceRatingId;
 
-  @OneToOne(fetch = FetchType.EAGER)
+  @JsonIgnore
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "ServiceId")
   private ServiceEntity service;
 
@@ -25,6 +30,8 @@ public class ServiceRatingEntity implements Serializable {
   private String description;
 
   @Column(name = "CreationDate")
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+  @DateTimeFormat(pattern = "yyyy-MM-dd")
   private Date creationDate;
 
   @Column(name = "IsActive")
@@ -70,11 +77,11 @@ public class ServiceRatingEntity implements Serializable {
     this.creationDate = creationDate;
   }
 
-  public boolean isActive() {
+  public boolean getIsActive() {
     return isActive;
   }
 
-  public void setActive(boolean active) {
+  public void setIsActive(boolean active) {
     isActive = active;
   }
 }

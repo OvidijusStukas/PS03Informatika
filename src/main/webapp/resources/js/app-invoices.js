@@ -20,11 +20,12 @@ function setupButtons(){
             $("#invoice-edit-modal").modal().addClass("md-show");
         }else{
 
-            var $form = $("#invoice-edit");
+            var $form = $("#service-rating");
             $form[0].reset();
-            $form.validate().resetForm();
+            $form.validate({ignore: "*"});
+            $form.find('span').children().remove();
 
-            $("#service-rating-modal").modal().addClass("md-show");
+            setupRatingModal($(e.currentTarget));
         }
 
     });
@@ -89,7 +90,6 @@ function setupFilter(){
 }
 
 function setupDataTable(){
-
     if(window.userLevel === 1 ){
         $("#invoice-table").dataTable({
             "language": {
@@ -179,6 +179,42 @@ function setupDataTable(){
             }
         });
     }
+}
 
+function setupRatingModal(target) {
+  children = target.children();
 
+  $.getJSON('/service/get?invoiceId='+target.data('id'), function (data) {
+    $.each(data, function (index, val) {
+
+      var html = "<div class='form-group'>" +
+        "<label>"+val.description+"</label></br>" +
+        "<input type='hidden' name='services["+index+"].serviceId' value='"+val.serviceId+"'>" +
+        "<input type='hidden' name='services["+index+"].typeId' value='"+val.type.serviceTypeId+"'>" +
+        "<input type='hidden' name='services["+index+"].carId' value='"+val.car.carId+"'>" +
+        "<input type='hidden' name='services["+index+"].isActive' value='"+val.isActive+"'>" +
+        "<input type='hidden' name='services["+index+"].price' value='"+val.price+"'>" +
+        "<input type='hidden' name='services["+index+"].description' value='"+val.description+"'>";
+
+      $.each(val.ratings, function(ratingIndex, rating) {
+        html += "<label>Komentaras: </label>" +
+          "<input class='form-control' type='text' value='"+rating.description+"' name='services["+index+"].ratings["+ratingIndex+"].description'>" +
+          "<label>vertinimas: </label>" +
+          "<input class='form-control' type='text' value='"+rating.rating+"' name='services["+index+"].ratings["+ratingIndex+"].rating'>" +
+          "<input type='hidden' value='"+rating.serviceRatingId+"' name='services["+index+"].ratings["+ratingIndex+"].serviceRatingId'>" +
+          "<input type='hidden' value='"+rating.creationDate+"' name='services["+index+"].ratings["+ratingIndex+"].creationDate'>" +
+          "<input type='hidden' value='"+rating.isActive+"' name='services["+index+"].ratings["+ratingIndex+"].isActive'>";
+      });
+
+      html += "<label>Komentaras: </label>" +
+        "<input class='form-control' type='text' name='services["+index+"].ratings["+val.ratings.length+"].description'>" +
+        "<label>vertinimas: </label>" +
+        "<input class='form-control' type='text' value='0' name='services["+index+"].ratings["+val.ratings.length+"].rating'>";
+      html += "</div";
+
+      $("#insertTarget").append(html);
+    });
+
+    $("#service-rating-modal").modal().addClass("md-show");
+  });
 }

@@ -1,11 +1,9 @@
 package edu.informatika.semestrinis.controller;
 
-import edu.informatika.semestrinis.entity.CarEntity;
-import edu.informatika.semestrinis.entity.InvoiceEntity;
-import edu.informatika.semestrinis.entity.ServiceEntity;
-import edu.informatika.semestrinis.entity.ServiceTypeEntity;
+import edu.informatika.semestrinis.entity.*;
 import edu.informatika.semestrinis.helper.AuthenticationHelper;
 import edu.informatika.semestrinis.model.ServiceModel;
+import edu.informatika.semestrinis.model.ServiceRatingModel;
 import edu.informatika.semestrinis.repository.BaseRepository;
 import edu.informatika.semestrinis.repository.InvoiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -28,14 +27,16 @@ public class ServiceController {
   private final BaseRepository<CarEntity> carRepository;
   private final BaseRepository<ServiceEntity> serviceRepository;
   private final BaseRepository<ServiceTypeEntity> serviceTypeRepository;
+  private final BaseRepository<ServiceRatingEntity> serviceRatingRepository;
 
   @Autowired
-  public ServiceController(InvoiceRepository invoiceRepository, AuthenticationHelper authenticationHelper, BaseRepository<CarEntity> carRepository, BaseRepository<ServiceEntity> serviceRepository, BaseRepository<ServiceTypeEntity> serviceTypeRepository) {
+  public ServiceController(InvoiceRepository invoiceRepository, AuthenticationHelper authenticationHelper, BaseRepository<CarEntity> carRepository, BaseRepository<ServiceEntity> serviceRepository, BaseRepository<ServiceTypeEntity> serviceTypeRepository, BaseRepository<ServiceRatingEntity> serviceRatingRepository) {
     this.invoiceRepository = invoiceRepository;
     this.authenticationHelper = authenticationHelper;
     this.carRepository = carRepository;
     this.serviceRepository = serviceRepository;
     this.serviceTypeRepository = serviceTypeRepository;
+    this.serviceRatingRepository = serviceRatingRepository;
   }
 
   @ResponseBody
@@ -78,7 +79,7 @@ public class ServiceController {
   }
 
   @ResponseBody
-  @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')")
+  @PreAuthorize("isAuthenticated()")
   @RequestMapping(value = "get", method = RequestMethod.GET)
   public List<ServiceEntity> get(@RequestParam int invoiceId) {
     InvoiceEntity invoice = invoiceRepository.getEntity(InvoiceEntity.class, invoiceId);
@@ -87,6 +88,28 @@ public class ServiceController {
     services.removeIf(service -> service.getCar().getCarId() != invoice.getCar().getCarId());
 
     return services;
+  }
+
+  @PreAuthorize("isAuthenticated()")
+  @RequestMapping(value = "rate", method = RequestMethod.POST)
+  public ModelAndView rate(@ModelAttribute ServiceRatingModel serviceRatingModel) {
+    for (ServiceEntity model : serviceRatingModel.getServices()) {
+      model.setCar(carRepository.getEntity(CarEntity.class, model.getCarId()));
+      model.setType(serviceTypeRepository.getEntity(ServiceTypeEntity.class, model.getTypeId()));
+
+      model.getRatings().stream().filter(r -> r.getDescription() != null && r.getDescription().length() > 0).forEach(r -> {
+        r.setService(model);
+        r.setIsActive(true);
+        r.setCreationDate(new Date());
+
+        if (r.getServiceRatingId() == 0)
+          serviceRatingRepository.insertEntity(r);
+        else
+          serviceRatingRepository.updateEntity(r);
+      });
+    }
+
+    return new ModelAndView("redirect:/invoices");
   }
 
   private static double round(double unrounded, int roundingMode)
