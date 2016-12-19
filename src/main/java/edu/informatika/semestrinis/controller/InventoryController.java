@@ -47,6 +47,10 @@ public class InventoryController {
       cars.removeIf(CarEntity::getIsSold);
     }
 
+    if (authenticationHelper.hasRole("ROLE_EMPLOYEE")) {
+      cars.removeIf(car -> car.getShop().getShopId() != authenticationHelper.getCurrentUser().getShopEntity().getShopId());
+    }
+
     ModelAndView modelAndView = new ModelAndView("inventory/index");
     modelAndView.addObject("cars", cars);
     modelAndView.addObject("model", new CarEntity());

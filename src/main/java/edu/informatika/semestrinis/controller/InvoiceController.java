@@ -41,6 +41,9 @@ public class InvoiceController {
         if (authenticationHelper.hasRole("ROLE_USER"))
             invoices.removeIf(invoice -> invoice.getCar().getUser() == null || invoice.getCar().getUser().getUserId() != authenticationHelper.getCurrentUserId());
 
+        if (authenticationHelper.hasRole("ROLE_EMPLOYEE"))
+            invoices.removeIf(invoice -> invoice.getCar().getShop().getShopId() != authenticationHelper.getCurrentUser().getShopEntity().getShopId());
+
         ModelAndView modelAndView = new ModelAndView("invoice/index");
         modelAndView.addObject("invoices", invoices);
 
