@@ -7,12 +7,23 @@ $(document).ready(function(){
 function setupButtons(){
     $(".invoiceEntity").dblclick(function(e){
 
-        var $form = $("#invoice-edit");
-        $form[0].reset();
-        $form.validate().resetForm();
+        if(window.userLevel === 1 || window.userLevel === 2)//admin / employee
+        {
+            var $form = $("#invoice-edit");
+            $form[0].reset();
+            $form.validate().resetForm();
 
-        setupEditModal($(e.currentTarget));
-        $("#invoice-edit-modal").modal().addClass("md-show");
+            setupEditModal($(e.currentTarget));
+            $("#invoice-edit-modal").modal().addClass("md-show");
+        }else{
+
+            var $form = $("#invoice-edit");
+            $form[0].reset();
+            $form.validate().resetForm();
+
+            $("#service-rating-modal").modal().addClass("md-show");
+        }
+
     });
 }
 
@@ -56,6 +67,8 @@ function setupValidation(){
             status: "Laukas privalomas"
         }
     })
+
+
 
 }
 
