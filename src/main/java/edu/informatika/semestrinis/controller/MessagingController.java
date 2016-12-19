@@ -1,73 +1,125 @@
 package edu.informatika.semestrinis.controller;
 
 import edu.informatika.semestrinis.entity.ChatGroupEntity;
+import edu.informatika.semestrinis.entity.MessageEntity;
+import edu.informatika.semestrinis.entity.ParticipantEntity;
 import edu.informatika.semestrinis.entity.UserEntity;
+import edu.informatika.semestrinis.helper.AuthenticationHelper;
 import edu.informatika.semestrinis.repository.BaseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Date;
 import java.util.List;
 
 @Controller
 @RequestMapping("messages")
 public class MessagingController {
 
+    private final AuthenticationHelper authenticationHelper;
     private final BaseRepository<UserEntity> userRepository;
     private final BaseRepository<ChatGroupEntity> chatGroupRepository;
+    private final BaseRepository<ParticipantEntity> participantRepository;
 
     @Autowired
-    public MessagingController(BaseRepository<UserEntity> userRepository, BaseRepository<ChatGroupEntity> chatGroupRepository) {
+    public MessagingController(AuthenticationHelper authenticationHelper, BaseRepository<UserEntity> userRepository, BaseRepository<ChatGroupEntity> chatGroupRepository, BaseRepository<ParticipantEntity> participantRepository) {
+        this.authenticationHelper = authenticationHelper;
         this.userRepository = userRepository;
         this.chatGroupRepository = chatGroupRepository;
+        this.participantRepository = participantRepository;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = {"", "/"}, method = RequestMethod.GET)
     public ModelAndView index() {
 
-        List<UserEntity> users = userRepository.getEntities(UserEntity.class);
+        List<ChatGroupEntity> groups = chatGroupRepository.getEntities(ChatGroupEntity.class);
         ModelAndView modelAndView = new ModelAndView("messaging/index");
-        modelAndView.addObject("users",users);
+        modelAndView.addObject("groups", groups);
 
         return modelAndView;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = {"createNewChat"}, method = RequestMethod.GET)
     public ModelAndView createNewChat(@RequestParam String chatMessage) {
 
-        //chat group pakurimas ir message prisegimas kartu su visais darbuotojais kaip participant ir dabartiniu useriu
+        ChatGroupEntity chatGroup = new ChatGroupEntity();
+        chatGroup.setName("Pokalbis");
+        chatGroup.setCreationDate(new Date());
+        chatGroup.setLastMessageDate(new Date());
+        chatGroup.setActive(true);
+
+        int id = chatGroupRepository.insertEntity(chatGroup);
+        List<UserEntity> users = userRepository.getEntities(UserEntity.class);
+        users.removeIf(u -> u.getRole().getName().equals("ROLE_USER") || u.getRole().getName().equals("ROLE_ADMIN"));
+
+        UserEntity currentUser = authenticationHelper.getCurrentUser();
+        users.add(currentUser);
+
+        ChatGroupEntity updatedChatGroup = chatGroupRepository.getEntity(ChatGroupEntity.class, id);
+        for (UserEntity user : users) {
+            ParticipantEntity participant = new ParticipantEntity();
+
+            participant.setUser(user);
+            participant.setIpAddress("Fake");
+            participant.setEmail(user.getEmail());
+
+            int participantId = participantRepository.insertEntity(participant);
+
+            if (user == currentUser) {
+                MessageEntity message = new MessageEntity();
+                message.setParticipant(participantRepository.getEntity(ParticipantEntity.class, participantId));
+                message.setSentDate(new Date());
+                message.setText(chatMessage);
+
+                updatedChatGroup.setLastMessageDate(new Date());
+            }
+
+            updatedChatGroup.getParticipants().add(participantRepository.getEntity(ParticipantEntity.class, participantId));
+        }
+
+        chatGroupRepository.updateEntity(updatedChatGroup);
 
         return new ModelAndView("redirect:/messages");
     }
 
-    @RequestMapping(value = {"disableChatGroup"}, method = RequestMethod.GET)
-    public ModelAndView disableChatGroup(@RequestParam int chatGroupId){
+    @PreAuthorize("isAuthenticated()")
+    @RequestMapping(value = {"disableChatGroup"}, method = RequestMethod.POST)
+    public ModelAndView disableChatGroup(@RequestBody MultiValueMap<String,String> formData){
 
-        //suranda chat groupa pagal id ir isActive = false;
-
-        return new ModelAndView("redirect:/messages");
-    }
-
-    @RequestMapping(value = {"deleteChatGroup"}, method = RequestMethod.GET)
-    public ModelAndView deleteChatGroup(@RequestParam int chatGroupId){
-
-        //suranda chat groupa pagal id delete
+        ChatGroupEntity chatGroupEntity = chatGroupRepository.getEntity(ChatGroupEntity.class , Integer.parseInt(formData.getFirst("chatGroupId")));
+        chatGroupEntity.setActive(false);
+        chatGroupRepository.updateEntity(chatGroupEntity);
 
         return new ModelAndView("redirect:/messages");
     }
 
-    @RequestMapping(value = {"showChatGroupHistory"}, method = RequestMethod.GET)
-    public ModelAndView showChatGroupHistory(@RequestParam int chatGroupId){
+    @PreAuthorize("isAuthenticated()")
+    @RequestMapping(value = {"deleteChatGroup"}, method = RequestMethod.POST)
+    public ModelAndView deleteChatGroup(@RequestBody MultiValueMap<String,String> formData) {
+        chatGroupRepository.deleteEntity(ChatGroupEntity.class,  Integer.parseInt(formData.getFirst("chatGroupId")));
+
+        return new ModelAndView("redirect:/messages");
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @RequestMapping(value = {"showChatGroupHistory"}, method = RequestMethod.POST)
+    public ModelAndView showChatGroupHistory(@RequestBody MultiValueMap<String,String> formData){
 
         //suranda chat groupa pagal id ir gražina visas message
 
         return new ModelAndView("redirect:/messages");
     }
 
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = {"addChatParticipant"}, method = RequestMethod.GET)
     public ModelAndView showChatGroupHistory(@RequestParam int chatGroupId, @RequestParam int userId){
 
@@ -76,6 +128,7 @@ public class MessagingController {
         return new ModelAndView("redirect:/messages");
     }
 
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = {"sendEmailEnable"}, method = RequestMethod.GET)
     public ModelAndView enableEmailMessages(@RequestParam int chatGroupId, @RequestParam String email){
 

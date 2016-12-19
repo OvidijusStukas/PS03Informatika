@@ -2,7 +2,9 @@ package edu.informatika.semestrinis.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "Participant")
@@ -14,9 +16,8 @@ public class ParticipantEntity implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int participantId;
 
-  @OneToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "ChatGroupId")
-  private ChatGroupEntity chatGroup;
+  @ManyToMany(fetch = FetchType.EAGER, mappedBy = "participants")
+  private List<ChatGroupEntity> chatGroup;
 
   @OneToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "UserId")
@@ -34,6 +35,10 @@ public class ParticipantEntity implements Serializable {
   @Column(name = "Email")
   private String email;
 
+  public ParticipantEntity() {
+    this.chatGroup = new ArrayList<>();
+  }
+
   public int getParticipantId() {
     return participantId;
   }
@@ -42,11 +47,11 @@ public class ParticipantEntity implements Serializable {
     this.participantId = participantId;
   }
 
-  public ChatGroupEntity getChatGroup() {
+  public List<ChatGroupEntity> getChatGroup() {
     return chatGroup;
   }
 
-  public void setChatGroup(ChatGroupEntity chatGroup) {
+  public void setChatGroup(List<ChatGroupEntity> chatGroup) {
     this.chatGroup = chatGroup;
   }
 

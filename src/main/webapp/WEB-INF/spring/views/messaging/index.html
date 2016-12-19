@@ -128,17 +128,17 @@
                 <h4 class="modal-title">Pokalbio administravimas</h4>
             </div>
             <div class="modal-body clearfix">
-                <form th:action="@{messages/showChatGroupHistory}" method="GET">
+                <form th:action="@{messages/showChatGroupHistory}" method="POST">
                     <input class="chatGroupIdHidden" name="chatGroupId" type="hidden">
-                    <a type="submit" id="show-chat-history" href="#" class="btn btn-primary col-xs-12" style="margin-top:10px;">Pamatyti pokalbio istorija</a>
+                    <button type="submit" id="show-chat-history" class="btn btn-primary col-xs-12" style="margin-top:10px;">Pamatyti pokalbio istorija</button>
                 </form>
-                <form th:action="@{messages/deleteChatGroup}" method="GET">
+                <form th:action="@{messages/deleteChatGroup}" method="POST">
                     <input class="chatGroupIdHidden" name="chatGroupId" type="hidden">
-                    <a type="submit" id="chat-group-delete" href="#" class="btn btn-primary col-xs-12" style="margin-top:10px;">Trinti pokalbi</a>
+                    <button type="submit" id="chat-group-delete" class="btn btn-primary col-xs-12" style="margin-top:10px;">Trinti pokalbi</button>
                 </form>
-                <form th:action="@{messages/disableChatGroup}" method="GET">
+                <form th:action="@{messages/disableChatGroup}" method="POST">
                     <input class="chatGroupIdHidden" name="chatGroupId" type="hidden">
-                    <a type="submit" id="chat-group-diactyvate" href="#" class="btn btn-primary col-xs-12" style="margin-top:10px;">Deaktivuoti pokalbį</a>
+                    <button type="submit" id="chat-group-diactyvate" class="btn btn-primary col-xs-12" style="margin-top:10px;">Deaktivuoti pokalbį</button>
                 </form>
             </div>
         </div>

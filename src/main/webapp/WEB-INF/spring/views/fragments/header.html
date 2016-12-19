@@ -43,7 +43,7 @@
             <li sec:authorize="hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE', 'ROLE_USER')">
               <a th:href="@{/invoices}"><span class="glyphicon glyphicon-list-alt"></span> Sąskaitos</a>
             </li>
-            <li>
+            <li sec:authorize="isAuthenticated()">
               <a th:href="@{/messages}"><span class="glyphicon glyphicon-envelope"></span> Žinutės</a>
             </li>
           </ul>

@@ -2,7 +2,9 @@ package edu.informatika.semestrinis.entity;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "ChatGroup")
@@ -25,6 +27,12 @@ public class ChatGroupEntity implements Serializable {
 
   @Column(name = "IsActive")
   private boolean isActive;
+
+  @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+  @JoinTable(name = "ChatGroupParticipants",
+    joinColumns = {@JoinColumn(name = "ChatGroupId")},
+    inverseJoinColumns = {@JoinColumn(name = "ParticipantId")})
+  private List<ParticipantEntity> participants;
 
   public int getChatGroupId() {
     return chatGroupId;
@@ -64,5 +72,13 @@ public class ChatGroupEntity implements Serializable {
 
   public void setActive(boolean active) {
     isActive = active;
+  }
+
+  public List<ParticipantEntity> getParticipants() {
+    return participants;
+  }
+
+  public void setParticipants(List<ParticipantEntity> participants) {
+    this.participants = participants;
   }
 }
