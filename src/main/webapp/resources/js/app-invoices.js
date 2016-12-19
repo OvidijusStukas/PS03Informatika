@@ -1,10 +1,15 @@
 $(document).ready(function(){
     setupDataTable();
     setupButtons();
+    setupValidation();
 });
 
 function setupButtons(){
     $(".invoiceEntity").dblclick(function(e){
+
+        var $form = $("#invoice-edit");
+        $form[0].reset();
+        $form.validate().resetForm();
 
         setupEditModal($(e.currentTarget));
         $("#invoice-edit-modal").modal().addClass("md-show");
@@ -26,6 +31,31 @@ function setupEditModal(target){
     $("#edit-total-price").val($(children[4]).data("totalprice"));
     $("#edit-generation-date").val($(children[5]).data("generationdate"));
     $("#edit-status").val($(children[6]).data("status"));
+
+}
+
+function setupValidation(){
+
+    $("#invoice-edit").validate({
+        rules:{
+            name: "required",
+            number: "required",
+            senderName: "required",
+            receiverName: "required",
+            totalPrice: "required",
+            generationDate: "required",
+            status: "required"
+        },
+        messages:{
+            name: "Laukas privalomas",
+            number: "Laukas privalomas",
+            senderName: "Laukas privalomas",
+            receiverName: "Laukas privalomas",
+            totalPrice: "Laukas privalomas",
+            generationDate: "Laukas privalomas",
+            status: "Laukas privalomas"
+        }
+    })
 
 }
 
