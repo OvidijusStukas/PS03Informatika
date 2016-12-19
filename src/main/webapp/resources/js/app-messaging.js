@@ -13,9 +13,22 @@ function setupButtons(){
     });
 
     $(".group-chat").dblclick(function(e){
-        $(".chatGroupIdHidden").val($(e.currentTarget).data("chat-id"));
-        selectedChatGroup = $(e.currentTarget).data("chat-id");
-        $("#group-chat").modal().addClass("md-show");
+
+        selectedChatGroup = $(e.currentTarget).data("id");
+
+        $.ajax({
+            type: "GET",
+            url: "messages/showChatGroupHistory",
+            data: {chatGroupId: selectedChatGroup}
+        }).done(function (data) {
+            console.log(data);
+            $("#chat-container").empty()
+            $.each(data, function(i,val){
+                $("#chat-container").append("<div class='col-xs-12 text-center'>"+val.text+"</div>");
+            })
+
+            $("#group-chat").modal().addClass("md-show");
+        });
     });
 
     $("#show-chat-participants-btn").click(function(){
@@ -38,12 +51,29 @@ function setupButtons(){
 
     $(".admin-chat-group").click(function(e){
         var target = $(e.currentTarget);
-        $(".chatGroupIdHidden").parent().
-        $(".chatGroupIdHidden").val(target.data("chat-id"));
-        $("#admin-chat-group-id").val(target.data("chat-id"));
+
+        selectedChatGroup = target.data("id");
+        $(".chatGroupIdHidden").val(target.data("id"));
+        $("#admin-chat-group-id").val(target.data("id"));
         $("#chat-admin-modal").modal().addClass("md-show");
 
     });
+
+    $("#show-chat-history").click(function(){
+        $.ajax({
+            type: "GET",
+            url: "messages/showChatGroupHistory",
+            data: {chatGroupId: selectedChatGroup}
+        }).done(function (data) {
+            console.log(data);
+            $("#chat-container").empty()
+            $.each(data, function(i,val){
+                $("#chat-container").append("<div class='col-xs-12 text-center'>"+val.text+"</div>");
+            })
+
+            $("#group-chat").modal().addClass("md-show");
+        });
+    })
 }
 
 function setupValidation(){

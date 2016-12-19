@@ -45,8 +45,11 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <textarea id="chat-message" rows="4" cols="50" class="col-xs-12"></textarea>
-                <a id="chat-submit" class="btn btn-primary">Siūsti</a>
+                <form th:action="@{/messages/sendMessage}" method="get">
+                    <input type="hidden" name="chatGroupId" value="-1">
+                    <textarea id="chat-message" rows="4" cols="50" class="col-xs-12" name="message"></textarea>
+                    <button id="chat-submit" type="submit" class="btn btn-primary">Siūsti</button>
+                </form>
             </div>
         </div>
     </div>
@@ -86,7 +89,7 @@
                             <option th:each="user : ${users}" th:value="${user.getUserId()}" th:text="${user.getName()}"></option>
                         </select>
                     </div>
-                    <a type="submit" href="#" class="btn btn-primary col-xs-12" style="margin-top:10px;">Siūsti pranešimus</a>
+                    <button type="button" data-dismiss="modal" class="btn btn-primary col-xs-12" style="margin-top:10px;">Siūsti pranešimus</button>
                 </form>
             </div>
         </div>
@@ -106,7 +109,7 @@
                         <input id="emailChatGroupId" name="chatGroupId" type="hidden">
                         <input class="form-control" name="email" type="email" placeholder="El. paštas"/>
                     </div>
-                    <a type="submit" href="#" class="btn btn-primary col-xs-12" style="margin-top:10px;">Siūsti pranešimus</a>
+                    <button type="button" data-dismiss="modal"class="btn btn-primary col-xs-12" style="margin-top:10px;">Siūsti pranešimus</button>
                 </form>
             </div>
         </div>
@@ -121,10 +124,8 @@
                 <h4 class="modal-title">Pokalbio administravimas</h4>
             </div>
             <div class="modal-body clearfix">
-                <form th:action="@{messages/showChatGroupHistory}" method="GET">
                     <input class="chatGroupIdHidden" name="chatGroupId" type="hidden">
                     <button type="submit" id="show-chat-history" class="btn btn-primary col-xs-12" style="margin-top:10px;">Pamatyti pokalbio istorija</button>
-                </form>
                 <form th:action="@{messages/deleteChatGroup}" method="POST">
                     <input class="chatGroupIdHidden" name="chatGroupId" type="hidden">
                     <button type="submit" id="chat-group-delete" class="btn btn-primary col-xs-12" style="margin-top:10px;">Trinti pokalbi</button>

@@ -14,6 +14,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -41,8 +42,10 @@ public class MessagingController {
     public ModelAndView index() {
 
         List<ChatGroupEntity> groups = chatGroupRepository.getEntities(ChatGroupEntity.class);
+        List<UserEntity> users = userRepository.getEntities(UserEntity.class);
         ModelAndView modelAndView = new ModelAndView("messaging/index");
         modelAndView.addObject("groups", groups);
+        modelAndView.addObject("users",users);
 
         return modelAndView;
     }
@@ -115,8 +118,18 @@ public class MessagingController {
     @ResponseBody
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = {"showChatGroupHistory"}, method = RequestMethod.GET)
-    public ChatGroupEntity showChatGroupHistory(@RequestParam int chatGroupId) {
-        return chatGroupRepository.getEntity(ChatGroupEntity.class , chatGroupId);
+    public List<MessageEntity> showChatGroupHistory(@RequestParam int chatGroupId) {
+
+        ChatGroupEntity entity = chatGroupRepository.getEntity(ChatGroupEntity.class , chatGroupId);
+        List<MessageEntity> messages = new ArrayList<>();
+
+        for(int i = 0; i< entity.getParticipants().size(); i++){
+            for(int j =0; j<entity.getParticipants().get(i).getMessages().size();j++){
+                messages.addAll(entity.getParticipants().get(i).getMessages());
+            }
+        }
+
+        return messages;
     }
 
     @PreAuthorize("isAuthenticated()")
